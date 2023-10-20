@@ -1,5 +1,7 @@
 package Profile;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserProfile {
@@ -15,6 +17,9 @@ public class UserProfile {
 	}
 	public void setDof(Date dof) {
 		this.dof = new Date(dof.getTime());
+	}
+	public void setDof(String dof) throws ParseException {
+		this.dof = new SimpleDateFormat("dd/MM/yyyy").parse(dof);;
 	}
 	
 	public float getHeight() {

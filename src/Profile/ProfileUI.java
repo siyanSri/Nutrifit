@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -18,10 +21,10 @@ public class ProfileUI extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextField dofField;
+	private JFormattedTextField dofField;
 	private JTextField heightField;
 	private JTextField weightField;
-	private JTextField sexFeild;
+	private JTextField sexField;
 	private ButtonGroup radioGroup;
 	
 	public ProfileUI() {
@@ -33,8 +36,10 @@ public class ProfileUI extends JFrame{
 		mainPanel.setLayout(new GridLayout(5, 3));
 
 		JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
-		dofField = new JTextField(20);
 
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		dofField = new JFormattedTextField(df);
+		
 		JLabel heightLabel = new JLabel("Height (cm):");
 		heightField = new JTextField(20);
 
@@ -54,12 +59,19 @@ public class ProfileUI extends JFrame{
 		JButton submitButton = new JButton("Submit");
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String dob = dofField.getText();
+				
+				UserProfile user = new UserProfile();
+				
+				try {
+					user.setDof(dofField.toString());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				String height = heightField.getText();
 				String weight = weightField.getText();
 
 				// Here, you can process and store the entered data as needed.
-				System.out.println("Date of Birth: " + dob);
 				System.out.println("Height: " + height + " cm");
 				System.out.println("Weight: " + weight + " kg");
 			}
