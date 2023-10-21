@@ -1,7 +1,12 @@
 package Profile;
 
 import java.text.ParseException;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class UserProfile {
@@ -12,14 +17,31 @@ public class UserProfile {
 	private char sex;
 	private char unit;
 	
+	
+	public void createProfile() {
+		database();
+	}
+	
+	private void database() {
+		DatabaseManager database = new DatabaseManager();
+        database.connect();
+        database.create(this);
+	}
+	
+	
 	public Date getDof() {
 		return new Date(this.dof.getTime());
 	}
 	public void setDof(Date dof) {
 		this.dof = new Date(dof.getTime());
 	}
-	public void setDof(String dof) throws ParseException {
-		this.dof = new SimpleDateFormat("dd/MM/yyyy").parse(dof);;
+	public void setDof(String dof){
+		try {
+			this.dof = new SimpleDateFormat("yyyy/MM/dd").parse(dof);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 	
 	public float getHeight() {
@@ -46,8 +68,14 @@ public class UserProfile {
 	public char getUnit() {
 		return this.unit;
 	}
-	public void setUnit(char unit) {
-		this.unit = unit;
+	public void setUnit(Boolean metric) {
+		if(metric) {
+			this.unit = 'm';
+		}
+		else {
+			this.unit = 'i';
+		}
+		System.out.println(this.unit);
 	}
 	
 	
