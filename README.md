@@ -1,1 +1,3 @@
-# EECS3311-Group-Project-
+# Nutrifit: Eat, Run, Smile!
+
+Authors: Sayuru, Simran, Siyan
