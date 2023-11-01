@@ -25,18 +25,17 @@ public class DatabaseManagerExercise{
     public void create(UserExerciseData user){
     	
     
-        String insertSQL = "INSERT INTO exercise (idExercise,Type,Duration,Intensity,doe) VALUES (?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO exercise (Type,Duration,Intensity,doe) VALUES (?, ?, ?, ?)";
         Random rand = new Random(); 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dom = dateFormat.format(user.getDate());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-            preparedStatement.setInt(1, rand.nextInt(50));
-            preparedStatement.setString(2, user.getExerciseType());
-            preparedStatement.setFloat(3, user.getExerciseDuration());
-            preparedStatement.setString(4, user.getExerciseIntensity());
-            preparedStatement.setString(5, dom);
+            preparedStatement.setString(1, user.getExerciseType());
+            preparedStatement.setFloat(2, user.getExerciseDuration());
+            preparedStatement.setString(3, user.getExerciseIntensity());
+            preparedStatement.setString(4, dom);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -26,13 +26,13 @@ public class DatabaseManager {
     	
     	
 
-        String insertSQL = "INSERT INTO profiles (idProfiles, dof, height, weight, sex) VALUES (?, ?, ?, ?, ?)";
-        Random rand = new Random(); 
+        String insertSQL = "INSERT INTO profiles (userID, dof, height, weight, sex) VALUES (?, ?, ?, ?, ?)";
+        UniqueIDGenerator idGenerator = new UniqueIDGenerator();
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
         	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String dof = dateFormat.format(user.getDof());
-            preparedStatement.setInt(1, rand.nextInt(50));
+            preparedStatement.setString(1, idGenerator.generateUniqueID());
             preparedStatement.setString(2, dof);
             preparedStatement.setFloat(3, user.getHeight());
             preparedStatement.setFloat(4, user.getWeight());

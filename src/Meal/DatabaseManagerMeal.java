@@ -26,17 +26,15 @@ public class DatabaseManagerMeal {
     	
     	
 
-        String insertSQL = "INSERT INTO meals (idMeals,Type,Quantity) VALUES (?, ?, ?)";
-        Random rand = new Random(); 
+        String insertSQL = "INSERT INTO meals (Type, Quantity, dom) VALUES (?, ?, ?)";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dom = dateFormat.format(user.getDate());
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
 
-            preparedStatement.setInt(1, rand.nextInt(50));
-            preparedStatement.setString(2, user.getMealType());
-            preparedStatement.setFloat(3, user.getQuantityList().get(0));
-//            preparedStatement.setString(4, dom);
+            preparedStatement.setString(1, user.getMealType());
+            preparedStatement.setFloat(2, user.getQuantityList().get(0));
+           preparedStatement.setString(3, dom);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
