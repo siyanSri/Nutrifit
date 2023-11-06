@@ -1,4 +1,4 @@
-package Meal;
+package Visualization;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,10 +23,6 @@ public class UserMealData {
 	private void database() {
 		DatabaseManagerMeal database = new DatabaseManagerMeal();
         database.connect();
-        System.out.println(this.date.toString());
-        System.out.println(this.mealType.toString());
-        System.out.println(this.ingredientsList.toString());
-        System.out.println(this.quantityList.toString());
         database.create(this);
 	}
 	
