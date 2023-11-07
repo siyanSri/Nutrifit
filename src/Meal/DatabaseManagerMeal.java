@@ -8,36 +8,28 @@ import java.util.Random;
 
 public class DatabaseManagerMeal {
 
-	private DatabaseAdapter sql = new SqlAdapter();
-	private Connection connection;
-	
+	private DatabaseContext context = new DatabaseContext();
+
 	private String username ;
 	private String password ;
-    
-    DatabaseManagerMeal() {
-    	username = System.getenv("NAME");
-    	password = System.getenv("PASS");
-    	System.out.println(username+password);
-    }
-    public void connect() {
-    	connection = sql.connect(username,password);
-    }
-    public void create(UserMealData user){
-    	
-    	
 
-        String insertSQL = "INSERT INTO meals (Type, Quantity, dom) VALUES (?, ?, ?)";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dom = dateFormat.format(user.getDate());
+	DatabaseManagerMeal() {
+		username = System.getenv("NAME").toString();
+		password = System.getenv("PASS").toString();
+	}
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+	public void create(UserMealData user){
 
-            preparedStatement.setString(1, user.getMealType());
-            preparedStatement.setFloat(2, user.getQuantityList().get(0));
-           preparedStatement.setString(3, dom);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dom = dateFormat.format(user.getDate());
+		String insertSQL = "INSERT INTO meals (Type, Quantity, dom) VALUES (\""+ user.getMealType().toString() +"\", " +  user.getQuantityList().get(0).toString() + ", \"" + dom +"\")";
+
+		System.out.println(insertSQL);
+		context.executeDatabaseOperations(username, password, insertSQL);
+		
+	}
 }
+
+

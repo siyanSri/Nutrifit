@@ -22,7 +22,6 @@ public class UserMealData {
 	
 	private void database() {
 		DatabaseManagerMeal database = new DatabaseManagerMeal();
-        database.connect();
         System.out.println(this.date.toString());
         System.out.println(this.mealType.toString());
         System.out.println(this.ingredientsList.toString());
