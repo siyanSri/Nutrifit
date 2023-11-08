@@ -23,8 +23,7 @@ public class UserProfile {
 	}
 	
 	private void database() {
-		DatabaseManager database = new DatabaseManager();
-        database.connect();
+		DatabaseManagerProfile database = new DatabaseManagerProfile();
         database.create(this);
 	}
 	
