@@ -22,6 +22,7 @@ public class ProfileUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	private JFormattedTextField dofField;
+	private JTextField nameField;
 	private JTextField heightField;
 	private JTextField weightField;
 	private JTextField sexField;
@@ -36,7 +37,10 @@ public class ProfileUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new GridLayout(6, 3));
+		mainPanel.setLayout(new GridLayout(7, 3));
+
+		JLabel nameLabel = new JLabel("What is your name:");
+		nameField = new JTextField(20);
 
 		JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
 
@@ -69,6 +73,8 @@ public class ProfileUI extends JFrame{
 			}
 		});
 
+		mainPanel.add(nameLabel);
+		mainPanel.add(nameField);
 		mainPanel.add(dateOfBirthLabel);
 		mainPanel.add(dofField);
 		mainPanel.add(heightLabel);
@@ -85,12 +91,13 @@ public class ProfileUI extends JFrame{
 	
 	 private void handleSubmit() {
 	        UserProfile user = new UserProfile();
+	        user.setName(nameField.getText().toString());
 	        user.setDof(dofField.getText().toString());
 			user.setHeight(Float.parseFloat(heightField.getText().toString()));
 			user.setWeight(Float.parseFloat(weightField.getText().toString()));
 			user.setSex(sexField.getText().toString().charAt(0));
 			user.setUnit(mRadioButton.isSelected());
-	       
+			
 			user.createProfile();
 			
 	 }

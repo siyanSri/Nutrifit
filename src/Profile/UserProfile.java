@@ -7,10 +7,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class UserProfile {
 
+	
+	private String name;
 	private Date dof;
 	private float height;
 	private float weight;
@@ -18,15 +21,30 @@ public class UserProfile {
 	private char unit;
 	
 	
-	public void createProfile() {
-		database();
-	}
+	private DatabaseManagerProfile database = null;
 	
 	private void database() {
-		DatabaseManagerProfile database = new DatabaseManagerProfile();
-        database.create(this);
+		this.database = new DatabaseManagerProfile();
 	}
 	
+	public void createProfile() {
+		if(database == null)	
+			database();
+		database.create(this);
+	}
+	public ArrayList<String> getProfiles() {
+		if(database == null)	
+			database();
+		return database.fetchNames();
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public Date getDof() {
 		return new Date(this.dof.getTime());
@@ -76,8 +94,6 @@ public class UserProfile {
 		}
 		System.out.println(this.unit);
 	}
-	
-	
-	
+
 	
 }
