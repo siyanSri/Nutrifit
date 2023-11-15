@@ -28,7 +28,7 @@ public class ProfileSelectorUI extends JFrame{
         JList<String> profileList = new JList<>(profiles.toArray(new String[profiles.size()]));
         JScrollPane scrollPane = new JScrollPane(profileList);
 
-        // Create "Select Profile" button
+        // Create "Select Profile"z button
         JButton selectProfileButton = new JButton("Select Profile");
         selectProfileButton.addActionListener(new ActionListener() {
             @Override

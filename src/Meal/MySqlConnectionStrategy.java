@@ -10,10 +10,10 @@ import java.sql.Statement;
 
 public class MySqlConnectionStrategy implements DatabaseStrategy {
 	private static Connection connection;
-	private Statement statement;
+    private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
 
-	MySqlConnectionStrategy(){
+	public MySqlConnectionStrategy(){
 		connection = null;
 	}
 
@@ -31,42 +31,43 @@ public class MySqlConnectionStrategy implements DatabaseStrategy {
 		return connection;
 	}
 
-	@Override
-	public void executeQuery(Connection connection, String sql) {
-	    Statement stmt = null;
+    @Override
+    public void executeQuery(Connection connection, String sql) {
+        try {
+            // Use PreparedStatement for flexibility and to prevent SQL injection
+            preparedStatement = connection.prepareStatement(sql);
 
-	    try {
-	        stmt = connection.createStatement();
-	        
-	        // Use execute for non-query statements
-	         stmt.executeUpdate(sql);
-	        
-	       
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            if (stmt != null) {
-	                stmt.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	}
+            if (sql.trim().toUpperCase().startsWith("SELECT")) {
+                // For SELECT queries
+                this.resultSet = preparedStatement.executeQuery();
+            } else {
+                // For non-SELECT queries (UPDATE, INSERT, DELETE)
+                int rowsAffected = preparedStatement.executeUpdate();
+                System.out.println("Rows affected: " + rowsAffected);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public ResultSet getResult(Connection connection) {
+        return resultSet;
+    }
 
-
-	@Override
-	public ResultSet getResult(Connection connection) {
-		return resultSet;
-		// Implement result retrieval for MySQL
-	}
-
-	@Override
-	public void close(Connection connection) {
-		// Implement closing logic for MySQL
-	}
+    @Override
+    public void close(Connection connection) {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

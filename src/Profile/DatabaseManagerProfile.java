@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Meal.DatabaseContext;
+import Meal.MySqlConnectionStrategy;
+
 public class DatabaseManagerProfile {
 
 	private DatabaseContext context = new DatabaseContext();

@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.*;
 
 
+
+
 public class ingredientLogFrame extends JFrame implements ActionListener{
 	
 	JFrame ingredientLogFrame = new JFrame();
@@ -30,6 +32,14 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 		
 		ingredientsList = new ArrayList<>();
 		quantityList = new ArrayList<>();
+		
+        // Create an instance of the autocomplete class for ingredientField
+		
+		JComboBox comboBox = new JComboBox(this.user.getFoods().toArray()) ;
+        // has to be editable
+        comboBox.setEditable(true);
+        // change the editor's document
+        new autocomplete(comboBox);
 		
 		nextButton.addActionListener(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,16 +67,15 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
         addMorePanel.add(noButton);
         
         
-        logIngredientPanel.add(ingredientField);
-        
-
+//        logIngredientPanel.add(ingredientField);
+//        
+//
         logIngredientPanel.add(ingredient);
-        logIngredientPanel.add(ingredientField);
+//        logIngredientPanel.add(ingredientField);
+    
         logQuantityPanel.add(quantity);
         logQuantityPanel.add(quantityField);
-        logIngredientPanel.add(ingredient);
-        logIngredientPanel.add(ingredientField);
-
+        logIngredientPanel.add(comboBox);    
         
         
         mainPanel.add(logIngredientPanel);
@@ -118,7 +127,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
                 }
             	this.user.addToIngredientsList(ingredientString);
             	this.user.addToQuantityList(quantityString);
-            	this.user.createMeal();
+            	this.user.create();
             }
 		}
 		
