@@ -19,18 +19,23 @@ public class UserProfile {
 	private float weight;
 	private char sex;
 	private char unit;
-	
+	private String userID;
 	
 	private DatabaseManagerProfile database = null;
 	
 	private void database() {
 		this.database = new DatabaseManagerProfile();
+		
+		UniqueIDGenerator idGenerator = new UniqueIDGenerator();
+		this.userID = idGenerator.generateUniqueID();
 	}
 	
 	public void createProfile() {
 		if(database == null)	
 			database();
 		database.create(this);
+		
+		
 	}
 	public ArrayList<String> getProfiles() {
 		if(database == null)	
@@ -94,6 +99,11 @@ public class UserProfile {
 		}
 		System.out.println(this.unit);
 	}
-
+	public void setUserID(String userID) {
+		this.userID = new String (userID);
+	}
+	public String getUserID() {
+		return new String (userID);
+	}
 	
 }

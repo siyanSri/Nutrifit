@@ -1,5 +1,8 @@
 package Meal;
 
+import Profile.ProfileUI;
+import Profile.UserProfile;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,17 +23,24 @@ public class DatabaseManagerMeal {
 		password = System.getenv("PASS").toString();
 	}
 
+	
+	//idMeals, userID, Type, Quantity, dom, nutrientID, nutrientAmount, foodID
+	
 	public void create(UserMealData user){
 
+		ProfileUI classinstance = new ProfileUI();
+		UserProfile current = classinstance.getCurrent();
+		System.out.println(current.getUserID());
+		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String dom = dateFormat.format(user.getDate());
-		String insertSQL = "INSERT INTO meals (Type, Quantity, dom) VALUES (\""+ user.getMealType().toString() +"\", " +  user.getQuantityList().get(0).toString() + ", \"" + dom +"\")";
-
-		System.out.println(insertSQL);
-		context.executeDatabaseOperations(username, password, insertSQL);
-		
+		for(int i = 0; i<user.getIngredientsList().size(); i++) {
+			String insertSQL = "INSERT INTO meals (idMeals, userID, Type, Quantity, dom, nutrientID, nutrientAmount, foodID) VALUES (\""+ current.getUserID() +"\", " +user.getMealType().toString() +"\", " +  user.getQuantityList().get(i).toString() + ", \"" + dom +"\")";
+			System.out.println(insertSQL);
+			context.executeDatabaseOperations(username, password, insertSQL);
+		}
 	}
 	
 	public ArrayList<String> fetchNames() {

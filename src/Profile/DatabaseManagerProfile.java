@@ -25,13 +25,13 @@ public class DatabaseManagerProfile {
 
 	public void create(UserProfile user){
 
-		UniqueIDGenerator idGenerator = new UniqueIDGenerator();
+		
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String dof = dateFormat.format(user.getDof());
-		String insertSQL = "INSERT INTO profiles (userID, name, dof, height, weight, sex) VALUES (\""+ idGenerator.generateUniqueID() +"\", \"" + user.getName() +"\", \"" + dof +"\", " + user.getHeight() +", " + user.getWeight() + ", \"" + String.valueOf(user.getSex()) +"\")";
+		String insertSQL = "INSERT INTO profiles (userID, name, dof, height, weight, sex) VALUES (\""+ user.getUserID() +"\", \"" + user.getName() +"\", \"" + dof +"\", " + user.getHeight() +", " + user.getWeight() + ", \"" + String.valueOf(user.getSex()) +"\")";
 
 		context.executeDatabaseOperations(username, password, insertSQL);
 	}

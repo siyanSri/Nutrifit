@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 public class ProfileUI extends JFrame{
 
 
+	private UserProfile user = new UserProfile();
 	private static final long serialVersionUID = 1L;
 
 	private JFormattedTextField dofField;
@@ -90,7 +91,6 @@ public class ProfileUI extends JFrame{
 	}
 	
 	 private void handleSubmit() {
-	        UserProfile user = new UserProfile();
 	        user.setName(nameField.getText().toString());
 	        user.setDof(dofField.getText().toString());
 			user.setHeight(Float.parseFloat(heightField.getText().toString()));
@@ -102,5 +102,8 @@ public class ProfileUI extends JFrame{
 			
 	 }
 
+	 public UserProfile getCurrent() {
+		 return this.user;
+	 }
 
 }
