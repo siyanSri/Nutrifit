@@ -1,4 +1,4 @@
-package Profile;
+package connection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,3 +9,4 @@ public interface DatabaseAdapter {
     ResultSet getResult();
     void close();
 }
+

@@ -1,4 +1,8 @@
 package Profile;
+import connection.DatabaseAdapter;
+import connection.DatabaseContext;
+import connection.DatabaseStrategy;
+import connection.MySqlConnectionStrategy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,9 +11,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
-
-import Meal.DatabaseContext;
-import Meal.MySqlConnectionStrategy;
 
 public class DatabaseManagerProfile {
 

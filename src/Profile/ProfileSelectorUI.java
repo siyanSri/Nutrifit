@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import mainGUI.mainGUIFrame;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,12 +36,15 @@ public class ProfileSelectorUI extends JFrame{
         selectProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
                 // Add code to handle "Select Profile" button click
                 String selectedProfile = profileList.getSelectedValue();
                 if (selectedProfile != null) {
                     System.out.println("Selected Profile: " + selectedProfile);
                     dispose(); // Dispose of the current window
                     // Add logic to open the selected profile
+                    mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+                    mainFrame.setVisible(true);
                 }
             }
         });

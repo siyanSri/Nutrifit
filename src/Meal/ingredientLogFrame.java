@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -16,6 +17,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 	
 	JFrame ingredientLogFrame = new JFrame();
 	private JTextField ingredientField;
+	private JComboBox comboBox;
 	private JTextField quantityField;
 	private ButtonGroup ingredientButtonGroup;
 	JRadioButton yesButton = new JRadioButton("Yes");
@@ -24,18 +26,24 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
     private List<String> ingredientsList;
 	private List<String> quantityList;
 	int count = 0;
-	UserMealData user;
 	
+	private Meal meal;
+	private String type;
+	private String date;
+	private String selectedProfile;
 	
-	public ingredientLogFrame(UserMealData user) {
-		this.user = user;
+	public ingredientLogFrame(Meal meal, String type, String date, String selectedProfile) {
+		this.meal = meal;
+		this.type = type;
+		this.date = date;
+		this.selectedProfile = selectedProfile;
 		
 		ingredientsList = new ArrayList<>();
 		quantityList = new ArrayList<>();
 		
         // Create an instance of the autocomplete class for ingredientField
 		
-		JComboBox comboBox = new JComboBox(this.user.getFoods().toArray()) ;
+		comboBox = new JComboBox(this.meal.getFoods().toArray());
         // has to be editable
         comboBox.setEditable(true);
         // change the editor's document
@@ -71,11 +79,13 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 //        
 //
         logIngredientPanel.add(ingredient);
-//        logIngredientPanel.add(ingredientField);
+        logIngredientPanel.add(comboBox);    
+
     
+        
         logQuantityPanel.add(quantity);
         logQuantityPanel.add(quantityField);
-        logIngredientPanel.add(comboBox);    
+     
         
         
         mainPanel.add(logIngredientPanel);
@@ -92,6 +102,8 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println(this.selectedProfile);
+		
 		if (e.getSource()==nextButton) {
 		
 			if (yesButton.isSelected()) {
@@ -101,15 +113,14 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 				quantityList.add(quantityString);
 				count++; 
 				
-				this.user.addToIngredientsList(ingredientString);
-				this.user.addToQuantityList(quantityString);
+				createMeal();
 				
 	        	ingredientField.setText("");
 	            quantityField.setText("");
 			}
 			else {
 				dispose();
-            	mealLogFrame newFrame = new mealLogFrame();
+            	mealLogFrame newFrame = new mealLogFrame(this.selectedProfile);
             	newFrame.setVisible(true);
             	//for testing
             	String ingredientString = ingredientField.getText();
@@ -125,12 +136,33 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
             	for (String item : quantityList) { //printing the quantity in the list (for test only)
                     System.out.println(item);
                 }
-            	this.user.addToIngredientsList(ingredientString);
-            	this.user.addToQuantityList(quantityString);
-            	this.user.create();
+            	
+            	createMeal();
+            	
+            	
             }
 		}
 		
+	}
+	
+	private void createMeal() {
+	    String ingredientString = ingredientField.getText();
+	    ingredientsList.add(ingredientString);
+
+	    String quantityString = quantityField.getText();
+	    quantityList.add(quantityString);
+	    System.out.println("pass name" + this.selectedProfile);
+	    
+	    try {
+			this.meal = new Meal(comboBox.getSelectedItem().toString(), this.date, this.type, quantityString, this.selectedProfile);
+			System.out.println(meal.getUserId());
+	    }
+	    catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    this.meal.create();
 	}
 
 }

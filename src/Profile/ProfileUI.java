@@ -4,6 +4,9 @@
 package Profile;
 
 import javax.swing.*;
+
+import mainGUI.mainGUIFrame;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -71,6 +74,9 @@ public class ProfileUI extends JFrame{
 		submitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				handleSubmit();
+				dispose();
+				mainGUIFrame mainFrame = new mainGUIFrame(nameField.getText().toString());
+                mainFrame.setVisible(true);
 			}
 		});
 

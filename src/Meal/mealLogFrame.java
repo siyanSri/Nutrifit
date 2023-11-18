@@ -3,18 +3,24 @@ package Meal;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import javax.swing.*;
 
 public class mealLogFrame extends JFrame implements ActionListener{
-	UserMealData user = new UserMealData();
+	private Meal meal = new Meal();
 	JFrame mealLogFrame = new JFrame();
 	JButton submitButton = new JButton("Submit");
 	private String foodTypeString;
 	private ButtonGroup foodGroup;
 	private JTextField dateField;
+	private String selectedProfile;
 	
 	
-	public mealLogFrame() {
+	public mealLogFrame(String selectedProfile) {
+		
+		this.selectedProfile = selectedProfile;
 		
 		submitButton.addActionListener(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,7 +30,8 @@ public class mealLogFrame extends JFrame implements ActionListener{
 		logMealPanel.setLayout(new GridLayout(7, 1));
 		JLabel date = new JLabel("Date:");
 		dateField = new JTextField(20);
-		
+		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+		dateField = new JFormattedTextField(df);
 		JPanel foodPanel = new JPanel();
         JLabel foodType = new JLabel("Food Type:");
         
@@ -83,9 +90,13 @@ public class mealLogFrame extends JFrame implements ActionListener{
 	
 	@Override 
 	public void actionPerformed(ActionEvent e) {
+		//this.meal.setUserId(selectedProfile);
+		//System.out.println(this.meal.setId(selectedProfile));
 		if (e.getSource()==submitButton) {		
 			dispose();
-			ingredientLogFrame newFrame = new ingredientLogFrame(this.user);
+			System.out.println(meal.setId(selectedProfile));
+			System.out.println(meal.getUserId());
+			ingredientLogFrame newFrame = new ingredientLogFrame(this.meal, foodTypeString, dateField.getText(), selectedProfile);
 			newFrame.setVisible(true);
 			
 			//for Testing:
@@ -95,8 +106,7 @@ public class mealLogFrame extends JFrame implements ActionListener{
 			if(foodTypeString.equals("snack")){
 				System.out.println("True");
 			}
-			user.setDate(date);
-			user.setMealType(foodTypeString);
+
 		}
 		
 	}

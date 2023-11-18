@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Profile.DatabaseManagerProfile;
-
 
 public class UserMealData {
 	
@@ -16,24 +14,21 @@ public class UserMealData {
 	private List<String> ingredientsList = new ArrayList<String>();
 	private List<Float> quantityList= new ArrayList<Float>();
 	
-	
+	private String userId;
 	private DatabaseManagerMeal database = null;
 	
-	private void database() {
-		this.database = new DatabaseManagerMeal();
-	}
+
 	
 	public void create() {
 		if(database == null)	
 			database();
-		database.create(this);
+		database.create(this, userId);
 	}
 	public ArrayList<String> getFoods() {
 		if(database == null)	
 			database();
 		return database.fetchNames();
 	}
-	
 	
 	public Date getDate() {
 		return this.date;
@@ -65,4 +60,8 @@ public class UserMealData {
     public List<Float> getQuantityList(){
     	return this.quantityList;
     }
+
+	public void setUserId(String selectedProfile) {
+		this.userId = database.getUserId(selectedProfile);
+	}
 }
