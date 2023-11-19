@@ -10,7 +10,7 @@ import java.util.List;
 import connection.DatabaseContext;
 
 //Composite class representing a meal
-class Meal implements Component {
+public class Meal implements Component {
 	
 
 	private DatabaseManagerMeal database = null;
@@ -71,6 +71,18 @@ class Meal implements Component {
 		if(database == null)	
 			database();
 		this.userId = database.getUserId(selectedProfile);
+	}
+	
+	public String getUserId(String name){
+		if(database == null)	
+			database();
+		return database.getUserId(name);
+	}
+	
+	public List<Float> getVisualdata(String userId) {
+		if(database == null)	
+			database();
+		return database.getVisualizeIntake(userId);
 	}
     
     private void getNutrients() {

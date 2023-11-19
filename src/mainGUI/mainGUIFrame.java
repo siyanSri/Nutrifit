@@ -16,6 +16,7 @@ import Exercise.ExerciseUI;
 import Meal.mealLogFrame;
 import Profile.UserProfile;
 import Profile.editProfileFrame;
+import Visualization.VisualizeIntake;
 
 public class mainGUIFrame extends JFrame implements ActionListener {
 	DatabaseContext databaseContext = new DatabaseContext();
@@ -99,7 +100,9 @@ public class mainGUIFrame extends JFrame implements ActionListener {
         	edit.setVisible(true);
         }
         if (e.getSource() == visualizeFrameButton) {
-            // Add code for visualize button action
+        	dispose();
+        	VisualizeIntake visualize = new VisualizeIntake(selectedProfile);
+        	visualize.setVisible(true);
         }
     }
     

@@ -2,6 +2,7 @@ package Profile;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,24 +25,82 @@ import connection.DatabaseStrategy;
 import connection.MySqlConnectionStrategy;
 import mainGUI.mainGUIFrame;
 
+interface ProfileState {
+    void handleToggleButtonClick(editProfileFrame frame);
+    void updateToggleButtonState(editProfileFrame frame);
+    void updateFieldsVisibility(editProfileFrame frame);
+}
+
+class DefaultProfileState implements ProfileState {
+    @Override
+    public void handleToggleButtonClick(editProfileFrame frame) {
+        frame.setProfileState(new EditedProfileState());
+        frame.updateToggleButtonState();
+        frame.updateFieldsVisibility();
+    }
+
+    @Override
+    public void updateToggleButtonState(editProfileFrame frame) {
+        frame.toggleButton.setText("No");
+        frame.setIsClicked(false);
+    }
+
+    @Override
+    public void updateFieldsVisibility(editProfileFrame frame) {
+        boolean isVisible = false;
+        frame.updateFieldsVisibility(isVisible);
+    }
+}
+
+class EditedProfileState implements ProfileState {
+    @Override
+    public void handleToggleButtonClick(editProfileFrame frame) {
+        frame.setProfileState(new DefaultProfileState());
+        frame.updateToggleButtonState();
+        frame.updateFieldsVisibility();
+    }
+
+    @Override
+    public void updateToggleButtonState(editProfileFrame frame) {
+        frame.toggleButton.setText("Yes");
+        frame.setIsClicked(true);
+        
+    }
+
+    @Override
+    public void updateFieldsVisibility(editProfileFrame frame) {
+        boolean isVisible = true;
+        frame.updateFieldsVisibility(isVisible);
+    }
+}
+
 public class editProfileFrame extends JFrame implements ItemListener, ActionListener {
-	private String username ;
-	private String password ;
+
+	private boolean isClicked = false;
+	public void setIsClicked(boolean isClicked) {
+        this.isClicked = isClicked;
+    }
+	private ProfileState profileState;
 	
-	
+    private String username;
+    private String password;
+
     private JLabel nameLabel;
     private JLabel heightLabel;
     private JLabel weightLabel;
     private JLabel sexLabel;
     private JLabel dofLabel;
-    
+
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
     private JTextField sexField;
     private JTextField dofField;
-    
+
     private ButtonGroup profileGroup;
+
+    JButton toggleButton;
+
     JRadioButton editName = new JRadioButton("");
     JRadioButton editDof = new JRadioButton("");
     JRadioButton editHeight = new JRadioButton("");
@@ -54,35 +113,44 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
     private String selectedProfile;
     private UserProfile userProfile;
 
+
     public editProfileFrame(String selectedProfile) {
-    	
-    	editName.addItemListener(this);
+    	profileState = new DefaultProfileState();
+        username = System.getenv("NAME").toString();
+        password = System.getenv("PASS").toString();
+
+        toggleButton = new JButton("No");
+        toggleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleToggleButtonClick();
+            }
+        });
+
+        editName.addItemListener(this);
         editDof.addItemListener(this);
         editHeight.addItemListener(this);
         editWeight.addItemListener(this);
         editSex.addItemListener(this);
-        
-        nameField = new JTextField(20);
-    	dofField = new JTextField(20);
-    	heightField = new JTextField(20);
-    	weightField = new JTextField(20);
-    	sexField = new JTextField(20);
 
-    	DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-    	dofField = new JFormattedTextField(df);
-    	
+        nameField = new JTextField(20);
+        dofField = new JTextField(20);
+        heightField = new JTextField(20);
+        weightField = new JTextField(20);
+        sexField = new JTextField(20);
+
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        dofField = new JFormattedTextField(df);
+
         nameField.setVisible(false);
         dofField.setVisible(false);
         heightField.setVisible(false);
         weightField.setVisible(false);
         sexField.setVisible(false);
-        
-    	backButton.addActionListener(this);
-    	editButton.addActionListener(this); 
-    	
-    	username = System.getenv("NAME").toString();
-		password = System.getenv("PASS").toString();
-		
+
+        backButton.addActionListener(this);
+        editButton.addActionListener(this);
+
         this.selectedProfile = selectedProfile;
 
         editName.addActionListener(this);
@@ -95,13 +163,18 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
         JPanel weightPanel = new JPanel();
         JPanel sexPanel = new JPanel();
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(7, 1));
+        JPanel editAll = new JPanel();
+        mainPanel.setLayout(new GridLayout(8, 1));
+        editAll.setLayout(new GridLayout(1, 2));
         namePanel.setLayout(new GridLayout(1, 3));
         dofPanel.setLayout(new GridLayout(1, 3));
         heightPanel.setLayout(new GridLayout(1, 3));
         weightPanel.setLayout(new GridLayout(1, 3));
         sexPanel.setLayout(new GridLayout(1, 3));
         nameLabel = new JLabel(selectedProfile);
+        JLabel editAllLabel = new JLabel("Do you wish to edit all?");
+        editAll.add(editAllLabel);
+        editAll.add(toggleButton);
         namePanel.add(nameLabel);
         namePanel.add(editName);
         namePanel.add(nameField);
@@ -121,15 +194,16 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
         sexPanel.add(sexLabel);
         sexPanel.add(editSex);
         sexPanel.add(sexField);
-        
+
         profileGroup = new ButtonGroup();
-        
+
         profileGroup.add(editName);
         profileGroup.add(editDof);
         profileGroup.add(editHeight);
         profileGroup.add(editWeight);
         profileGroup.add(editSex);
 
+        mainPanel.add(editAll);
         mainPanel.add(namePanel);
         mainPanel.add(dofPanel);
         mainPanel.add(heightPanel);
@@ -138,9 +212,67 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
         mainPanel.add(editButton);
         mainPanel.add(backButton);
         add(mainPanel);
+        
+        DatabaseManagerProfile manager = new DatabaseManagerProfile();
+        
+        //displays the values in the frame
+        try {
+        	sexLabel.setText("Sex: " + manager.getSex(selectedProfile));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        try {
+        heightLabel.setText("Height: " + manager.getHeight(selectedProfile));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        try {
+        weightLabel.setText("Weight: " + manager.getWeight(selectedProfile));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        try {
+        dofLabel.setText("Date of Birth: " + manager.getDof(selectedProfile));
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void setProfileState(ProfileState state) {
+        this.profileState = state;
+    }
 
-        // Retrieve user profile data from the database and display in labels
-        retrieveAndDisplayUserProfile(selectedProfile);
+    public ProfileState getProfileState() {
+        return profileState;
+    }
+
+    // Modify handleToggleButtonClick, updateToggleButtonState, and updateFieldsVisibility
+    // to delegate the behavior to the current state
+    private void handleToggleButtonClick() {
+        profileState.handleToggleButtonClick(this);
+    }
+
+    public void updateToggleButtonState() {
+        profileState.updateToggleButtonState(this);
+    }
+
+    public void updateFieldsVisibility() {
+        profileState.updateFieldsVisibility(this);
+    }
+
+    // Modify updateFieldsVisibility to accept a boolean parameter
+    public void updateFieldsVisibility(boolean isVisible) {
+        nameField.setVisible(isVisible);
+        dofField.setVisible(isVisible);
+        heightField.setVisible(isVisible);
+        weightField.setVisible(isVisible);
+        sexField.setVisible(isVisible);
+
+        editName.setVisible(!isVisible);
+        editDof.setVisible(!isVisible);
+        editHeight.setVisible(!isVisible);
+        editSex.setVisible(!isVisible);
+        editWeight.setVisible(!isVisible);
     }
 
     @Override
@@ -150,59 +282,82 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
             mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
             mainFrame.setVisible(true);
         }
-        
+
         if (e.getSource() == editButton) {
-        	if (editName.isSelected()) {
+        	
+        	if(isClicked == true) {
+        		DatabaseManagerProfile manager = new DatabaseManagerProfile();
         		try {
-            	    updateName(selectedProfile, nameField.getText());
-            	} catch (SQLException ex) {
-            	    ex.printStackTrace();
-            	}
+                    manager.updateName(selectedProfile, nameField.getText());
+                    nameLabel.setText(nameField.getText());
+                    selectedProfile = nameField.getText();
+                    manager.updateDof(selectedProfile, dofField.getText());
+                    manager.updateHeight(selectedProfile, heightField.getText());
+                    manager.updateWeight(selectedProfile, weightField.getText());
+                    manager.updateSex(selectedProfile, sexField.getText());
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
         		dispose();
                 mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
                 mainFrame.setVisible(true);
         	}
-        	if (editDof.isSelected()) {
-        		try {
-            	    updateDof(selectedProfile, dofField.getText());
-            	} catch (SQLException ex) {
-            	    ex.printStackTrace();
-            	}
-        		dispose();
-                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-                mainFrame.setVisible(true);
-        	}
-        	if (editHeight.isSelected()) {
-        		try {
-            	    updateHeight(selectedProfile, heightField.getText());
-            	} catch (SQLException ex) {
-            	    ex.printStackTrace();
-            	}
-        		dispose();
-                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-                mainFrame.setVisible(true);
-        	}
-        	if (editWeight.isSelected()) {
-        		try {
-            	    updateWeight(selectedProfile, weightField.getText());
-            	} catch (SQLException ex) {
-            	    ex.printStackTrace();
-            	}
-        		dispose();
-                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-                mainFrame.setVisible(true);
-        	}
-        	if (editSex.isSelected()) {
-        		try {
-            	    updateSex(selectedProfile, sexField.getText());
-            	} catch (SQLException ex) {
-            	    ex.printStackTrace();
-            	}
-        		dispose();
-                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-                mainFrame.setVisible(true);
-        	}
-        } 
+	        else {
+	            DatabaseManagerProfile manager = new DatabaseManagerProfile();
+	            if (editName.isSelected()) {
+	                try {
+	                    manager.updateName(selectedProfile, nameField.getText());
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	                nameLabel.setText(nameField.getText());
+	                selectedProfile = nameField.getText();
+	                dispose();
+	                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+	                mainFrame.setVisible(true);
+	            }
+	            if (editDof.isSelected()) {
+	                try {
+	                    manager.updateDof(selectedProfile, dofField.getText());
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	                dispose();
+	                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+	                mainFrame.setVisible(true);
+	            }
+	            if (editHeight.isSelected()) {
+	                try {
+	                    manager.updateHeight(selectedProfile, heightField.getText());
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	                dispose();
+	                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+	                mainFrame.setVisible(true);
+	            }
+	            if (editWeight.isSelected()) {
+	                try {
+	                    manager.updateWeight(selectedProfile, weightField.getText());
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	                dispose();
+	                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+	                mainFrame.setVisible(true);
+	            }
+	            if (editSex.isSelected()) {
+	                try {
+	                    manager.updateSex(selectedProfile, sexField.getText());
+	                } catch (SQLException ex) {
+	                    ex.printStackTrace();
+	                }
+	                dispose();
+	                mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+	                mainFrame.setVisible(true);
+	            }
+	        }
+        }
     }
     
     @Override
@@ -220,84 +375,5 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
         } else if (source == editSex) {
             sexField.setVisible(editSex.isSelected());
         }
-    }
-
-    private void retrieveAndDisplayUserProfile(String name) {
-        
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy(); 
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        
-        String sql = "SELECT * FROM profiles WHERE name = '" + name + "'";
-
-        try {
-            ResultSet resultSet = databaseContext.executeDatabaseOperations(username, password, sql);
-
-            if (resultSet.next()) {
-                
-                sexLabel.setText("Sex: " + resultSet.getString("sex"));
-                heightLabel.setText("Height: " + resultSet.getString("height"));
-                weightLabel.setText("Weight: " + resultSet.getString("weight"));
-                dofLabel.setText("Date of Birth: " + resultSet.getString("dof"));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    private void updateName(String name, String newName) throws SQLException {
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy();
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        String sql = "UPDATE profiles SET name = '" + newName + "' WHERE name = '" + name + "'";
-
-        databaseContext.executeDatabaseOperations(username, password, sql);
-        nameLabel.setText(newName);
-        selectedProfile = newName;
-    }
-    
-    private void updateDof(String name, String newDof) throws SQLException {
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy();
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        String sql = "UPDATE profiles SET dof = '" + newDof + "' WHERE name = '" + name + "'";
-
-        databaseContext.executeDatabaseOperations(username, password, sql);
-    }
-    
-    private void updateHeight(String name, String newHeight) throws SQLException {
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy();
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        String sql = "UPDATE profiles SET height = '" + newHeight + "' WHERE name = '" + name + "'";
-
-        databaseContext.executeDatabaseOperations(username, password, sql);
-     
-    }
-    
-    private void updateWeight(String name, String newWeight) throws SQLException {
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy();
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        String sql = "UPDATE profiles SET weight = '" + newWeight + "' WHERE name = '" + name + "'";
-
-        databaseContext.executeDatabaseOperations(username, password, sql);
-     
-    }
-    
-    private void updateSex(String name, String newSex) throws SQLException {
-        DatabaseStrategy databaseStrategy = new MySqlConnectionStrategy();
-        DatabaseContext databaseContext = new DatabaseContext();
-        databaseContext.setDatabaseStrategy(databaseStrategy);
-
-        String sql = "UPDATE profiles SET sex = '" + newSex + "' WHERE name = '" + name + "'";
-
-        databaseContext.executeDatabaseOperations(username, password, sql);
-     
     }
 }

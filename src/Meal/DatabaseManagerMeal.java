@@ -150,7 +150,7 @@ public class DatabaseManagerMeal {
 		
 		 // Convert the list of nutrientId to a comma-separated string
 	    String nutrientIdString = nutrientId.stream().map(Object::toString).collect(Collectors.joining(", "));
-
+	    System.out.println(nutrientId.toString());
 	    // Use a prepared statement to avoid SQL injection
 	    String insertSQL = "SELECT NutrientName, NutrientUnit FROM nutrientnames WHERE NutrientId IN (" + nutrientIdString + ")";
 	    System.out.println(insertSQL);
@@ -168,6 +168,32 @@ public class DatabaseManagerMeal {
 		
 		return output;	
 	}
+	
+	public List<Float> getVisualizeIntake(String userId) {
+		List<Float> output = new ArrayList<Float>();
+		
+		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
+
+	    // Use a prepared statement to avoid SQL injection
+	    String insertSQL = "SELECT userId, nutrientId, SUM(nutrientAmount) AS totalNutrientAmount " +
+                "FROM meals " +
+                "WHERE userId = '"+ userId +"' AND nutrientId IN (208, 204, 606, 601, 205, 291, 269) " +
+                "GROUP BY userId, nutrientId";
+	    System.out.println(insertSQL);
+	    ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
+		
+		 try {
+			while (result.next()) {
+				output.add(result.getFloat("totalNutrientAmount"));
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return output;	
+	}
+
 	
 }
 

@@ -42,6 +42,11 @@ public class UserProfile {
 			database();
 		return database.fetchNames();
 	}
+	public String getUserId(String name){
+		if(database == null)	
+			database();
+		return database.getUserId(name);
+	}
 	
 	public String getName() {
 		return name;
