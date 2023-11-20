@@ -91,8 +91,8 @@ public class Meal implements Component {
     	List<String> nutrientName = new ArrayList<>();
     	List<String> nutrientUnit = new ArrayList<>();
     	database.nutrientInfo(this.mealId , nutrientId, nutrientAmount);
+    	System.out.println(nutrientId.toString());
     	this.currentSize = nutrientId.size();
-    	
     	database.nutrientVals(nutrientId, nutrientName, nutrientUnit);
     	createNutrients(nutrientId, nutrientAmount, nutrientName, nutrientUnit);
     }

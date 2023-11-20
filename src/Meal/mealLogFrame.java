@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 
+import mainGUI.mainGUIFrame;
+
 public class mealLogFrame extends JFrame implements ActionListener{
 	private Meal meal = new Meal();
 	JFrame mealLogFrame = new JFrame();
@@ -34,6 +36,20 @@ public class mealLogFrame extends JFrame implements ActionListener{
 		dateField = new JFormattedTextField(df);
 		JPanel foodPanel = new JPanel();
         JLabel foodType = new JLabel("Food Type:");
+        
+    	JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Close the current frame
+                dispose();
+                
+                // Create a new frame or navigate back to the previous frame
+                mainGUIFrame previousFrame = new mainGUIFrame(selectedProfile); // Replace with the actual previous frame class
+                previousFrame.setVisible(true);
+            }
+        });
+        
         
         //**************************** button group for food type
         foodGroup = new ButtonGroup();
@@ -85,6 +101,7 @@ public class mealLogFrame extends JFrame implements ActionListener{
         logMealPanel.add(foodType);
         logMealPanel.add(foodPanel);
 		logMealPanel.add(submitButton);
+		logMealPanel.add(backButton);
 		add(logMealPanel);
 	}
 	
@@ -94,7 +111,7 @@ public class mealLogFrame extends JFrame implements ActionListener{
 		//System.out.println(this.meal.setId(selectedProfile));
 		if (e.getSource()==submitButton) {		
 			dispose();
-			System.out.println(meal.setId(selectedProfile));
+			System.out.println(meal.setId(this.selectedProfile));
 			System.out.println(meal.getUserId());
 			ingredientLogFrame newFrame = new ingredientLogFrame(this.meal, foodTypeString, dateField.getText(), selectedProfile);
 			newFrame.setVisible(true);
