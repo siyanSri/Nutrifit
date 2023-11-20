@@ -19,7 +19,7 @@ public class DatabaseManagerProfile {
 	private String username ;
 	private String password ;
 
-	DatabaseManagerProfile() {
+	public DatabaseManagerProfile() {
 		username = System.getenv("NAME").toString();
 		password = System.getenv("PASS").toString();
 	}

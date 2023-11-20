@@ -177,7 +177,7 @@ public class DatabaseManagerMeal {
 	    // Use a prepared statement to avoid SQL injection
 	    String insertSQL = "SELECT userId, nutrientId, SUM(nutrientAmount) AS totalNutrientAmount " +
                 "FROM meals " +
-                "WHERE userId = '"+ userId +"' AND nutrientId IN (208, 204, 606, 601, 205, 291, 269) " +
+                "WHERE userId = '"+ userId +"' AND nutrientId IN (208, 204, 606, 601, 205, 291, 269, 203) " +
                 "GROUP BY userId, nutrientId";
 	    System.out.println(insertSQL);
 	    ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
@@ -193,6 +193,29 @@ public class DatabaseManagerMeal {
 		
 		return output;	
 	}
+	
+    public float getWeight(String name) {
+        this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
+        
+        float output = 0;
+        
+        String sql = "SELECT weight FROM profiles WHERE name = '" + name + "'";
+        ResultSet result = context.executeDatabaseOperations(username, password, sql);
+
+        try {
+			while (result.next()) {
+            output = result.getFloat("weight");
+			}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			}
+			
+			return output;	
+    }
+
+
 
 	
 }

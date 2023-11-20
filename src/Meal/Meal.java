@@ -88,6 +88,12 @@ public class Meal implements Component, Observer{
 		return database.getVisualizeIntake(userId);
 	}
     
+	public float getWeight(String selectedProfile) {
+		if(database == null)	
+			database();
+		return database.getWeight(selectedProfile);
+	}
+	
     private void getNutrients() {
     	List<Integer> nutrientId = new ArrayList<>();
     	List<Float> nutrientAmount = new ArrayList<>();
