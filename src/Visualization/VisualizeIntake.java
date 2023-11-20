@@ -36,22 +36,37 @@ public class VisualizeIntake extends JFrame {
                 dispose();
                 
                 // Create a new frame or navigate back to the previous frame
-                mainGUIFrame previousFrame = new mainGUIFrame(selectedUser); // Replace with the actual previous frame class
+                mainGUIFrame previousFrame = new mainGUIFrame(selectedUser); 
                 previousFrame.setVisible(true);
             }
         });
     	 
     	id = meal.getUserId(selectedUser);
     	
+    	List<Float> nutrientVals = meal.getVisualdata(id);
+        System.out.println(nutrientVals.toString());
     	
-    	 CategoryDataset dataset = createDataset();
+        if(!nutrientVals.isEmpty()) {
+    	 CategoryDataset dataset = createDataset(nutrientVals);
          JFreeChart chart = createChart(dataset, "Visualize");
          ChartPanel chartPanel = new ChartPanel(chart);
          chartPanel.setSize(new Dimension(500, 270));
-
+         
          setLayout(new BorderLayout());
          add(backButton, BorderLayout.NORTH);
          add(chartPanel, BorderLayout.CENTER);
+        }
+        else {
+        	JLabel Panel = new JLabel("No data Logged on User");
+            Panel.setSize(new Dimension(500, 270));
+            
+            setLayout(new BorderLayout());
+            add(backButton, BorderLayout.NORTH);
+            add(Panel, BorderLayout.CENTER);
+        }
+        
+        
+         
 
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          setSize(600, 400);
@@ -59,20 +74,20 @@ public class VisualizeIntake extends JFrame {
          setVisible(true);
     }
 
-    private CategoryDataset createDataset() {
+    private CategoryDataset createDataset(List<Float> nutrientVals) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        List<Float> nutrientVals = meal.getVisualdata(id);
-        System.out.println(nutrientVals.toString());
+        
         // Replace these values with actual nutrient data
-        dataset.addValue(nutrientVals.get(0), this.selectedUser, "Calories");
-        dataset.addValue(nutrientVals.get(1), this.selectedUser, "Fat");
-        dataset.addValue(nutrientVals.get(2), this.selectedUser, "Saturated Fat");
-        dataset.addValue(nutrientVals.get(3), this.selectedUser, "Cholesterol");
-        dataset.addValue(nutrientVals.get(4), this.selectedUser, "Carbs");
-        dataset.addValue(nutrientVals.get(5), this.selectedUser, "Fiber");
-        dataset.addValue(nutrientVals.get(6), this.selectedUser, "Sugar");
-
+	    
+        	dataset.addValue(nutrientVals.get(0), this.selectedUser, "Calories");
+	        dataset.addValue(nutrientVals.get(1), this.selectedUser, "Fat");
+	        dataset.addValue(nutrientVals.get(2), this.selectedUser, "Saturated Fat");
+	        dataset.addValue(nutrientVals.get(3), this.selectedUser, "Cholesterol");
+	        dataset.addValue(nutrientVals.get(4), this.selectedUser, "Carbs");
+	        dataset.addValue(nutrientVals.get(5), this.selectedUser, "Fiber");
+	        dataset.addValue(nutrientVals.get(6), this.selectedUser, "Sugar");
+	    
         // Add data for another person (if needed)
         // dataset.addValue(...);
 

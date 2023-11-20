@@ -7,13 +7,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import Settings.Observer;
 import connection.DatabaseContext;
 
 //Composite class representing a meal
-public class Meal implements Component {
+public class Meal implements Component, Observer{
 	
 
 	private DatabaseManagerMeal database = null;
+	private Boolean metric = true;
 	
 	private String name;
 	private Integer mealId;
@@ -25,6 +27,7 @@ public class Meal implements Component {
     private int currentSize;
 
     public Meal() {
+    	
     	this.currentSize = 0;
 		this.name = "";
 		this.mealId = null;
@@ -117,6 +120,11 @@ public class Meal implements Component {
 		}
 	}
 
+	@Override 
+	public void updateMetric(boolean metric){
+            this.metric = metric;
+            System.out.println("Metrics in Meal:"+metric);
+	}
 
     @Override
     public Iterator<Component> iterator() {

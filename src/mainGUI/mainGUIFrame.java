@@ -13,9 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Exercise.ExerciseUI;
+import Meal.Meal;
 import Meal.mealLogFrame;
 import Profile.UserProfile;
 import Profile.editProfileFrame;
+import Settings.SettingsUI;
 import Visualization.VisualizeIntake;
 
 public class mainGUIFrame extends JFrame implements ActionListener {
@@ -28,6 +30,7 @@ public class mainGUIFrame extends JFrame implements ActionListener {
     JButton settingsButton = new JButton("Settings");
     JLabel profileLabel;
     
+    private Meal meal = new Meal();
     private String selectedProfile;
     private UserProfile userProfile;
 
@@ -38,6 +41,7 @@ public class mainGUIFrame extends JFrame implements ActionListener {
         exerciseFrameButton.addActionListener(this);
         visualizeFrameButton.addActionListener(this);
         editProfileButton.addActionListener(this);
+        settingsButton.addActionListener(this);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Main Menu");
@@ -86,7 +90,7 @@ public class mainGUIFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == mealFrameButton) {
             dispose();
-            mealLogFrame mealFrame = new mealLogFrame(selectedProfile);
+            mealLogFrame mealFrame = new mealLogFrame(meal ,selectedProfile);
             mealFrame.setVisible(true);
         }
         if (e.getSource() == exerciseFrameButton) {
@@ -103,6 +107,11 @@ public class mainGUIFrame extends JFrame implements ActionListener {
         	dispose();
         	VisualizeIntake visualize = new VisualizeIntake(selectedProfile);
         	visualize.setVisible(true);
+        }
+        if (e.getSource() == settingsButton) {
+        	dispose();
+        	SettingsUI settings = new SettingsUI(meal, selectedProfile);
+        	settings.setVisible(true);
         }
     }
     

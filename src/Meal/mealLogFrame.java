@@ -8,10 +8,11 @@ import java.text.SimpleDateFormat;
 
 import javax.swing.*;
 
+import Settings.Observer;
 import mainGUI.mainGUIFrame;
 
 public class mealLogFrame extends JFrame implements ActionListener{
-	private Meal meal = new Meal();
+	private Meal meal;
 	JFrame mealLogFrame = new JFrame();
 	JButton submitButton = new JButton("Submit");
 	private String foodTypeString;
@@ -20,10 +21,11 @@ public class mealLogFrame extends JFrame implements ActionListener{
 	private String selectedProfile;
 	
 	
-	public mealLogFrame(String selectedProfile) {
+	public mealLogFrame(Meal meal, String selectedProfile){
 		
+		this.meal = meal;
 		this.selectedProfile = selectedProfile;
-		
+	
 		submitButton.addActionListener(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Meal Log Menu");
@@ -45,7 +47,7 @@ public class mealLogFrame extends JFrame implements ActionListener{
                 dispose();
                 
                 // Create a new frame or navigate back to the previous frame
-                mainGUIFrame previousFrame = new mainGUIFrame(selectedProfile); // Replace with the actual previous frame class
+                mainGUIFrame previousFrame = new mainGUIFrame(selectedProfile); 
                 previousFrame.setVisible(true);
             }
         });
