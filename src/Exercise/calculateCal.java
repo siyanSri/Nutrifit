@@ -7,6 +7,10 @@ import java.util.StringTokenizer;
 
 import Profile.DatabaseManagerProfile;
 
+
+ /**
+ * The class Calculate calories
+ */ 
 public class calculateCal {
     String selectedProfile;
     double BMR;
@@ -20,7 +24,18 @@ public class calculateCal {
     String intensity; 
     private double totalCaloriesBurned;
 
-    public calculateCal(String selectedProfile, String Type, String Duration,String intensity) {
+
+/** 
+ *
+ * constructor 
+ *
+ * @param selectedProfile  the selected profile. 
+ * @param Type  the type. 
+ * @param Duration  the duration. 
+ * @param intensity  the intensity. 
+ */
+    public calculateCal(String selectedProfile, String Type, String Duration,String intensity) { 
+
         this.selectedProfile = selectedProfile;
         this.Type = Type;
         this.Duration = Duration;
@@ -31,7 +46,14 @@ public class calculateCal {
         calBurned();
     }
 
-    public void getValues() {
+
+/** 
+ *
+ * Gets the values
+ *
+ */
+    public void getValues() { 
+
         DatabaseManagerProfile manager = new DatabaseManagerProfile();
         try {
             this.sex = manager.getSex(selectedProfile);
@@ -55,7 +77,14 @@ public class calculateCal {
         }
     }
 
-    public void calculateBMR() {
+
+/** 
+ *
+ * Calculate BMR
+ *
+ */
+    public void calculateBMR() { 
+
         if (sex.equals("m")) {
             this.BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5;
         } else {
@@ -63,7 +92,14 @@ public class calculateCal {
         }
     }
     
-    public void calculateDOB() {
+
+/** 
+ *
+ * Calculate Age
+ *
+ */
+    public void calculateDOB() { 
+
         StringTokenizer tokenizer = new StringTokenizer(dof, "-");
         int year = Integer.parseInt(tokenizer.nextToken());
         int month = Integer.parseInt(tokenizer.nextToken());
@@ -76,7 +112,14 @@ public class calculateCal {
         this.age = period.getYears();
     }
     
-    public void calBurned() {
+
+/** 
+ *
+ * Calories burned
+ *
+ */
+    public void calBurned() { 
+
         double caloriesPerMinute = 0;
 
         if (Type.equals("walking")) {
@@ -132,7 +175,15 @@ public class calculateCal {
         }
         this.totalCaloriesBurned = caloriesPerMinute * Integer.parseInt(Duration);
     }   
-    public String getCalories() {
+
+/** 
+ *
+ * Gets the calories
+ *
+ * @return the calories
+ */
+    public String getCalories() { 
+
     	return String.valueOf(totalCaloriesBurned);
     }
 }

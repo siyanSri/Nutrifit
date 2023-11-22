@@ -7,45 +7,68 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
+
+/**
+ * The class Select UI extends Jframe
+ */ 
 public class SelectUI extends JFrame{
 
-	public SelectUI() {
-	    setSize(300, 200);
-	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	
-	    // Create a panel to hold the buttons
-	    JPanel panel = new JPanel();
-	
-	    // Create "Select Profile" button
-	    JButton selectProfile = new JButton("Select Profile");
-	    selectProfile.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	dispose(); // Dispose of the current window
-	            ProfileSelectorUI newWindow = new ProfileSelectorUI();
-	            newWindow.setVisible(true);
-	        }
-	    });
-	
-	    // Create "Create Profile" button
-	    JButton createProfile = new JButton("Create Profile");
-	    createProfile.addActionListener(new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	dispose(); // Dispose of the current window
-	            ProfileUI newWindow = new ProfileUI();
-	            newWindow.setVisible(true);
-	        }
-	    });
-	
-	    // Add buttons to the panel
-	    panel.add(selectProfile);
-	    panel.add(createProfile);
-	
-	    // Add the panel to the frame
-	    add(panel);
-	
-	    // Set frame visibility
-	    setVisible(true);
+
+	/** 
+	 *
+	 * Select UI
+	 *
+	 * @return 	public
+	 */
+	public SelectUI() { 
+
+		setSize(300, 200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// Create a panel to hold the buttons
+		JPanel panel = new JPanel();
+
+		// Create "Select Profile" button
+		JButton selectProfile = new JButton("Select Profile");
+		selectProfile.addActionListener(new ActionListener() {
+			@Override
+
+			/** 
+			 *
+			 * Action performed, show profiles
+			 *
+			 * @param e  the e. 
+			 */
+			public void actionPerformed(ActionEvent e) { 
+
+				dispose(); // Dispose of the current window
+				ProfileSelectorUI newWindow = new ProfileSelectorUI();
+				newWindow.setVisible(true);
+			}
+		});
+
+		JButton createProfile = new JButton("Create Profile");
+		createProfile.addActionListener(new ActionListener() {
+			@Override
+
+			/** 
+			 *
+			 * Action performed, create profile frame
+			 *
+			 * @param e  the e. 
+			 */
+			public void actionPerformed(ActionEvent e) { 
+
+				dispose(); // Dispose of the current window
+				ProfileUI newWindow = new ProfileUI();
+				newWindow.setVisible(true);
+			}
+		});
+
+
+		panel.add(selectProfile);
+		panel.add(createProfile);
+		add(panel);
+		setVisible(true);
 	}
 }

@@ -1,7 +1,5 @@
 package Meal;
 
-import java.util.Date;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +11,10 @@ import javax.swing.*;
 
 
 
+
+ /**
+ * The class Ingredient log frame extends Jframe implements action listener
+ */ 
 public class ingredientLogFrame extends JFrame implements ActionListener{
 	
 	JFrame ingredientLogFrame = new JFrame();
@@ -32,7 +34,19 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 	private String date;
 	private String selectedProfile;
 	
-	public ingredientLogFrame(Meal meal, String type, String date, String selectedProfile) {
+
+/** 
+ *
+ * Ingredient log frame
+ *
+ * @param meal  the meal. 
+ * @param type  the type. 
+ * @param date  the date. 
+ * @param selectedProfile  the selected profile. 
+ * @return 	public
+ */
+	public ingredientLogFrame(Meal meal, String type, String date, String selectedProfile) { 
+
 		this.meal = meal;
 		this.type = type;
 		this.date = date;
@@ -61,11 +75,11 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 		logIngredientPanel.setLayout(new GridLayout(1, 2));
 		logQuantityPanel.setLayout(new GridLayout(1, 2));
 		addMorePanel.setLayout(new GridLayout(1, 2));
-		JLabel ingredient = new JLabel("Enter Ingredient");
+		JLabel ingredient = new JLabel("Enter Meal or Ingredient");
 		ingredientField = new JTextField(20);
         JLabel quantity = new JLabel("Quantity:");
         quantityField = new JTextField(20);
-        JLabel inputMore = new JLabel("Input more ingredients:");
+        JLabel inputMore = new JLabel("Input more items:");
     
         ingredientButtonGroup = new ButtonGroup();
         
@@ -101,9 +115,16 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println(this.selectedProfile);
-		
+
+/** 
+ *
+ * Action performed, Yes or no button actions
+ *
+ * @param e  the e. 
+ */
+	public void actionPerformed(ActionEvent e) { 
+
+
 		if (e.getSource()==nextButton) {
 		
 			if (yesButton.isSelected()) {
@@ -128,14 +149,6 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 				String quantityString = quantityField.getText();
 				quantityList.add(quantityString);
             	count++;
-            	System.out.println("\ningredient:");
-            	for (String item : ingredientsList) { //printing the ingredients in the list (for test only)
-                    System.out.println(item);
-                }
-            	System.out.println("\nquantity:"); 
-            	for (String item : quantityList) { //printing the quantity in the list (for test only)
-                    System.out.println(item);
-                }
             	
             	createMeal();
             	
@@ -145,17 +158,23 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 		
 	}
 	
-	private void createMeal() {
+
+/** 
+ *
+ * Create meal
+ *
+ */
+	private void createMeal() { 
+
 	    String ingredientString = ingredientField.getText();
 	    ingredientsList.add(ingredientString);
 
 	    String quantityString = quantityField.getText();
 	    quantityList.add(quantityString);
-	    System.out.println("pass name" + this.selectedProfile);
 	    
 	    try {
 			this.meal = new Meal(comboBox.getSelectedItem().toString(), this.date, this.type, quantityString, this.selectedProfile);
-			System.out.println(meal.getUserId());
+
 	    }
 	    catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -166,3 +185,6 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 	}
 
 }
+
+
+

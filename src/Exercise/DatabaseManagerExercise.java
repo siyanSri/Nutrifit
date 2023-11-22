@@ -10,6 +10,10 @@ import connection.DatabaseContext;
 import connection.DatabaseStrategy;
 import connection.MySqlConnectionStrategy;
 
+
+ /**
+ * The class Database manager exercise
+ */ 
 public class DatabaseManagerExercise{
 	private DatabaseContext context = new DatabaseContext();
 
@@ -20,10 +24,17 @@ public class DatabaseManagerExercise{
     DatabaseManagerExercise() {
     	username = System.getenv("NAME").toString();
 		password = System.getenv("PASS").toString();
-    	System.out.println(username+password);
     }
     
-    public void create(UserExerciseData user){
+
+/** 
+ *
+ * Creates entry for user exercise
+ *
+ * @param user  the user. 
+ */
+    public void create(UserExerciseData user){ 
+
     	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String dom = dateFormat.format(user.getDate());

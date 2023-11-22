@@ -1,22 +1,21 @@
 package Meal;
-import connection.DatabaseAdapter;
-import connection.DatabaseContext;
-import connection.DatabaseStrategy;
-import connection.MySqlConnectionStrategy;
-import Profile.ProfileUI;
-import Profile.UserProfile;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+
+import connection.DatabaseContext;
+import connection.MySqlConnectionStrategy;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
+
+ /**
+ * The class Database manager meal
+ * username and password can be set manually or change environment variable in system to include PASS and NAME
+ */ 
 public class DatabaseManagerMeal {
 
 	private DatabaseContext context = new DatabaseContext();
@@ -32,7 +31,16 @@ public class DatabaseManagerMeal {
 	
 	//idMeals, userID, Type, Quantity, dom, nutrientID, nutrientAmount, foodID
 	
-	public void create(Meal meal, String userId){
+
+/** 
+ *
+ * Create Meal entry
+ *
+ * @param meal  the meal. 
+ * @param userId  the user identifier. 
+ */
+	public void create(Meal meal, String userId){ 
+
 
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
@@ -43,8 +51,6 @@ public class DatabaseManagerMeal {
 			Nutrient component = (Nutrient) iterator.next();
 			String insertSQL = "INSERT INTO meals (userID, Type, Quantity, dom, nutrientID, nutrientAmount, foodID) VALUES "
 					+ "(\""+ meal.getUserId() +"\", \"" + meal.getMealType() +"\", " +  meal.getQuantity() + ", \"" + dom + "\", " + component.getNutrientId() + ", " + component.getNutrientAmount() + ", " + meal.getFoodId() +")";
-			System.out.println(insertSQL);
-			System.out.println(meal.getUserId());
 			try {
 				context.executeDatabaseOperations(username, password, insertSQL);
 			}
@@ -56,7 +62,15 @@ public class DatabaseManagerMeal {
 		
 	}
 	
-	public ArrayList<String> fetchNames() {
+
+/** 
+ *
+ * Fetch names of foods
+ *
+ * @return ArrayList<String>
+ */
+	public ArrayList<String> fetchNames() { 
+
 		
 		ArrayList <String> output = new ArrayList<String>();
 		
@@ -78,18 +92,25 @@ public class DatabaseManagerMeal {
 
 	}
 	
-	public String getUserId(String name) {
+
+/** 
+ *
+ * Gets the user identifier
+ *
+ * @param name  the name. 
+ * @return the user identifier
+ */
+	public String getUserId(String name) { 
+
 		String output = null;
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
-		System.out.println("name"+name);
 		String insertSQL = "SELECT userID FROM profiles WHERE name = '"+ name +"'";
 		ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
 		
 		 try {
 			while (result.next()) {
-				System.out.println(result.getString("userID"));	
 			     output = result.getString("userID");
 			 }
 		} catch (SQLException e) {
@@ -99,11 +120,19 @@ public class DatabaseManagerMeal {
 			this.context.close();
 	    }
 		
-		System.out.println(output); 
 		return new String (output);	
 	}
 	
-	public Integer getMealId(String name) {
+
+/** 
+ *
+ * Gets the meal identifier
+ *
+ * @param name  the name. 
+ * @return the meal identifier
+ */
+	public Integer getMealId(String name) { 
+
 		Integer output = null;
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
@@ -122,7 +151,18 @@ public class DatabaseManagerMeal {
 		return output;	
 	}
 	
-	public String nutrientInfo(Integer mealId, List<Integer> nutrientId, List<Float> nutrientAmount) {
+
+/** 
+ *
+ * Nutrient info
+ *
+ * @param mealId  the meal identifier. 
+ * @param nutrientId  the nutrient identifier. 
+ * @param nutrientAmount  the nutrient amount. 
+ * @return String
+ */
+	public String nutrientInfo(Integer mealId, List<Integer> nutrientId, List<Float> nutrientAmount) { 
+
 		String output = null;
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
@@ -143,17 +183,25 @@ public class DatabaseManagerMeal {
 		return output;	
 	}
 	
-	public String nutrientVals(List<Integer> nutrientId, List<String> nutrientName ,List<String> nutrientUnit) {
+
+/** 
+ *
+ * Nutrient Values
+ *
+ * @param nutrientId  the nutrient identifier. 
+ * @param nutrientName  the nutrient name. 
+ * @param nutrientUnit  the nutrient unit. 
+ * @return String
+ */
+	public String nutrientVals(List<Integer> nutrientId, List<String> nutrientName ,List<String> nutrientUnit) { 
+
 		String output = null;
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
 		 // Convert the list of nutrientId to a comma-separated string
 	    String nutrientIdString = nutrientId.stream().map(Object::toString).collect(Collectors.joining(", "));
-	    System.out.println(nutrientId.toString());
-	    // Use a prepared statement to avoid SQL injection
 	    String insertSQL = "SELECT NutrientName, NutrientUnit FROM nutrientnames WHERE NutrientId IN (" + nutrientIdString + ")";
-	    System.out.println(insertSQL);
 	    ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
 		
 		 try {
@@ -169,17 +217,24 @@ public class DatabaseManagerMeal {
 		return output;	
 	}
 	
-	public List<Float> getVisualizeIntake(String userId) {
+
+/** 
+ *
+ * Gets the visualize intake
+ *
+ * @param userId  the user identifier. 
+ * @return the visualize intake
+ */
+	public List<Float> getVisualizeIntake(String userId) { 
+
 		List<Float> output = new ArrayList<Float>();
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 
-	    // Use a prepared statement to avoid SQL injection
 	    String insertSQL = "SELECT userId, nutrientId, SUM(nutrientAmount) AS totalNutrientAmount " +
                 "FROM meals " +
                 "WHERE userId = '"+ userId +"' AND nutrientId IN (208, 204, 606, 601, 205, 291, 269, 203) " +
                 "GROUP BY userId, nutrientId";
-	    System.out.println(insertSQL);
 	    ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
 		
 		 try {
@@ -194,7 +249,16 @@ public class DatabaseManagerMeal {
 		return output;	
 	}
 	
-    public float getWeight(String name) {
+
+/** 
+ *
+ * Gets the weight
+ *
+ * @param name  the name. 
+ * @return the weight
+ */
+    public float getWeight(String name) { 
+
         this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         
         float output = 0;

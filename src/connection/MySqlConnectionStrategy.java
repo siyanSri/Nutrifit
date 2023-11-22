@@ -5,24 +5,43 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+
+ /**
+ * MySQL connection strategy implements database strategy
+ */ 
 public class MySqlConnectionStrategy implements DatabaseStrategy {
 	private static Connection connection;
     private PreparedStatement preparedStatement;
 	private ResultSet resultSet;
 
-	public MySqlConnectionStrategy(){
+
+/** 
+ *
+ * MySQL connection strategy
+ *
+ * @return 	public
+ */
+	public MySqlConnectionStrategy(){ 
 		connection = null;
 	}
 
 	@Override
-	public Connection connect(String username, String password) {
+
+/** 
+ *
+ * Connection to database
+ *
+ * @param username  the username. 
+ * @param password  the password. 
+ * @return Connection
+ */
+	public Connection connect(String username, String password) { 
+
 		if (connection == null) {
 			try {
-				String url1 = "jdbc:mysql://localhost:3306/userprofile";
+				String url1 = "jdbc:mysql://localhost:3306/userprofile"; //Change according to database link
 				connection = DriverManager.getConnection(url1,username,password);
-				System.out.println("Connected");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -31,7 +50,16 @@ public class MySqlConnectionStrategy implements DatabaseStrategy {
 	}
 
     @Override
-    public void executeQuery(Connection connection, String sql) {
+
+/** 
+ *
+ * Execute query
+ *
+ * @param connection  the connection. 
+ * @param sql  the sql. 
+ */
+    public void executeQuery(Connection connection, String sql) { 
+
         try {
             // Use PreparedStatement for flexibility and to prevent SQL injection
             preparedStatement = connection.prepareStatement(sql);
@@ -42,7 +70,6 @@ public class MySqlConnectionStrategy implements DatabaseStrategy {
             } else {
                 // For non-SELECT queries (UPDATE, INSERT, DELETE)
                 int rowsAffected = preparedStatement.executeUpdate();
-                System.out.println("Rows affected: " + rowsAffected);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,12 +77,29 @@ public class MySqlConnectionStrategy implements DatabaseStrategy {
     }
 
     @Override
-    public ResultSet getResult(Connection connection) {
+
+/** 
+ *
+ * Gets the result
+ *
+ * @param connection  the connection. 
+ * @return the result
+ */
+    public ResultSet getResult(Connection connection) { 
+
         return resultSet;
     }
 
     @Override
-    public void close(Connection connection) {
+
+/** 
+ *
+ * Close Conection
+ *
+ * @param connection  the connection. 
+ */
+    public void close(Connection connection) { 
+
         try {
             if (preparedStatement != null) {
                 preparedStatement.close();

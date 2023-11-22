@@ -20,6 +20,10 @@ import Profile.editProfileFrame;
 import Settings.SettingsUI;
 import Visualization.VisualizeIntake;
 
+
+ /**
+ * The class Main GUI frame extends Jframe implements action listener
+ */ 
 public class mainGUIFrame extends JFrame implements ActionListener {
 	DatabaseContext databaseContext = new DatabaseContext();
     JFrame guiFrame = new JFrame();
@@ -34,7 +38,16 @@ public class mainGUIFrame extends JFrame implements ActionListener {
     private String selectedProfile;
     private UserProfile userProfile;
 
-    public mainGUIFrame(String selectedProfile) {	
+
+/** 
+ *
+ * Main GUI frame
+ *
+ * @param selectedProfile  the selected profile. 
+ * @return public
+ */
+    public mainGUIFrame(String selectedProfile) {	 
+
     	this.selectedProfile = selectedProfile;
         this.userProfile = userProfile;
         mealFrameButton.addActionListener(this);
@@ -81,13 +94,29 @@ public class mainGUIFrame extends JFrame implements ActionListener {
         add(mainPanel);
     }
     
-    private JLabel createBlankSpace() {
+
+/** 
+ *
+ * Create blank space
+ *
+ * @return JLabel
+ */
+    private JLabel createBlankSpace() { 
+
         JLabel blankLabel = new JLabel(" ");
         return blankLabel;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+
+/** 
+ *
+ * Action performed, All Possible buttons, log meal/exercise, Visualize, Settings, Edit profile
+ *
+ * @param e  the e. 
+ */
+    public void actionPerformed(ActionEvent e) { 
+
         if (e.getSource() == mealFrameButton) {
             dispose();
             mealLogFrame mealFrame = new mealLogFrame(meal ,selectedProfile);

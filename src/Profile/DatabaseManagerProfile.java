@@ -1,17 +1,18 @@
 package Profile;
-import connection.DatabaseAdapter;
-import connection.DatabaseContext;
-import connection.DatabaseStrategy;
-import connection.MySqlConnectionStrategy;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+
+import connection.DatabaseContext;
+import connection.MySqlConnectionStrategy;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Random;
 
+
+
+ /**
+ * The class Database manager profile
+ */ 
 public class DatabaseManagerProfile {
 
 	private DatabaseContext context = new DatabaseContext();
@@ -19,12 +20,28 @@ public class DatabaseManagerProfile {
 	private String username ;
 	private String password ;
 
-	public DatabaseManagerProfile() {
+
+/** 
+ *
+ * It is a constructor.
+ * username and password can be set manually or change environment variable in system to include PASS and NAME 
+ *
+ */
+	public DatabaseManagerProfile() { 
+
 		username = System.getenv("NAME").toString();
 		password = System.getenv("PASS").toString();
 	}
 
-	public void create(UserProfile user){
+
+/** 
+ *
+ * Create
+ *
+ * @param user  the user. 
+ */
+	public void create(UserProfile user){ 
+
 
 		
 		
@@ -37,7 +54,15 @@ public class DatabaseManagerProfile {
 		context.executeDatabaseOperations(username, password, insertSQL);
 	}
 	
-	public ArrayList<String> fetchNames() {
+
+/** 
+ *
+ * Fetch names
+ *
+ * @return ArrayList<String>
+ */
+	public ArrayList<String> fetchNames() { 
+
 		
 		ArrayList <String> output = new ArrayList<String>();
 		
@@ -59,18 +84,25 @@ public class DatabaseManagerProfile {
 
 	}
 	
-	public String getUserId(String name) {
+
+/** 
+ *
+ * Gets the user identifier
+ *
+ * @param name  the name. 
+ * @return the user identifier
+ */
+	public String getUserId(String name) { 
+
 		String output = null;
 		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
-		System.out.println("name"+name);
 		String insertSQL = "SELECT userID FROM profiles WHERE name = '"+ name +"'";
 		ResultSet result = context.executeDatabaseOperations(username, password, insertSQL);
 		
 		 try {
 			while (result.next()) {
-				System.out.println(result.getString("userID"));	
 			     output = result.getString("userID");
 			 }
 		} catch (SQLException e) {
@@ -80,41 +112,100 @@ public class DatabaseManagerProfile {
 			this.context.close();
 	    }
 		
-		System.out.println(output); 
 		return new String (output);	
 	}
 	
-	public void updateDof(String name, String newDof) throws SQLException {
+
+/** 
+ *
+ * Update Date of Birth
+ *
+ * @param name  the name. 
+ * @param newDof  the new dof. 
+ * @throws   SQLException 
+ */
+	public void updateDof(String name, String newDof) throws SQLException { 
+
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         String sql = "UPDATE profiles SET dof = '" + newDof + "' WHERE name = '" + name + "'";
         context.executeDatabaseOperations(username, password, sql);
     }
     
-    public void updateHeight(String name, String newHeight) throws SQLException {
+
+/** 
+ *
+ * Update height
+ *
+ * @param name  the name. 
+ * @param newHeight  the new height. 
+ * @throws   SQLException 
+ */
+    public void updateHeight(String name, String newHeight) throws SQLException { 
+
     	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         String sql = "UPDATE profiles SET height = '" + newHeight + "' WHERE name = '" + name + "'";
         context.executeDatabaseOperations(username, password, sql);
     }
     
-    public void updateWeight(String name, String newWeight) throws SQLException {
+
+/** 
+ *
+ * Update weight
+ *
+ * @param name  the name. 
+ * @param newWeight  the new weight. 
+ * @throws   SQLException 
+ */
+    public void updateWeight(String name, String newWeight) throws SQLException { 
+
     	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         String sql = "UPDATE profiles SET weight = '" + newWeight + "' WHERE name = '" + name + "'";
         context.executeDatabaseOperations(username, password, sql);
     }
     
-    public void updateSex(String name, String newSex) throws SQLException {
+
+/** 
+ *
+ * Update sex
+ *
+ * @param name  the name. 
+ * @param newSex  the new sex. 
+ * @throws   SQLException 
+ */
+    public void updateSex(String name, String newSex) throws SQLException { 
+
     	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         String sql = "UPDATE profiles SET sex = '" + newSex + "' WHERE name = '" + name + "'";
         context.executeDatabaseOperations(username, password, sql);
     }
     
-    public void updateName(String name, String newName) throws SQLException {
+
+/** 
+ *
+ * Update name
+ *
+ * @param name  the name. 
+ * @param newName  the new name. 
+ * @throws   SQLException 
+ */
+    public void updateName(String name, String newName) throws SQLException { 
+
     	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         String sql = "UPDATE profiles SET name = '" + newName + "' WHERE name = '" + name + "'";
         context.executeDatabaseOperations(username, password, sql);    
     }
     
-    public String getDof(String name) throws SQLException {
+
+/** 
+ *
+ * Gets the date of birth
+ *
+ * @param name  the name. 
+ * @return the dof
+ * @throws   SQLException 
+ */
+    public String getDof(String name) throws SQLException { 
+
         this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         
         String sql = "SELECT dof FROM profiles WHERE name = '" + name + "'";
@@ -127,7 +218,17 @@ public class DatabaseManagerProfile {
         }
     }
 
-    public String getHeight(String name) throws SQLException {
+
+/** 
+ *
+ * Gets the height
+ *
+ * @param name  the name. 
+ * @return the height
+ * @throws   SQLException 
+ */
+    public String getHeight(String name) throws SQLException { 
+
         this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         
         String sql = "SELECT height FROM profiles WHERE name = '" + name + "'";
@@ -140,7 +241,17 @@ public class DatabaseManagerProfile {
         }
     }
 
-    public String getWeight(String name) throws SQLException {
+
+/** 
+ *
+ * Gets the weight
+ *
+ * @param name  the name. 
+ * @return the weight
+ * @throws   SQLException 
+ */
+    public String getWeight(String name) throws SQLException { 
+
         this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         
         String sql = "SELECT weight FROM profiles WHERE name = '" + name + "'";
@@ -153,7 +264,17 @@ public class DatabaseManagerProfile {
         }
     }
 
-    public String getSex(String name) throws SQLException {
+
+/** 
+ *
+ * Gets the sex
+ *
+ * @param name  the name. 
+ * @return the sex
+ * @throws   SQLException 
+ */
+    public String getSex(String name) throws SQLException { 
+
         this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
         
         String sql = "SELECT sex FROM profiles WHERE name = '" + name + "'";
