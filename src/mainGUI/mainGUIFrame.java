@@ -95,8 +95,8 @@ public class mainGUIFrame extends JFrame implements ActionListener {
         }
         if (e.getSource() == exerciseFrameButton) {
             dispose();
-//            ExerciseUI exerciseFrame = new ExerciseUI();
-//            exerciseFrame.setVisible(true);
+            ExerciseUI exerciseFrame = new ExerciseUI(selectedProfile);
+            exerciseFrame.setVisible(true);
         }
         if (e.getSource() == editProfileButton) {
         	dispose();

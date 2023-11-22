@@ -24,7 +24,6 @@ public class UserExerciseData {
 	
 	private void database() {
 		DatabaseManagerExercise database = new DatabaseManagerExercise();
-        database.connect();
         database.create(this);
 	}
 	public String getCals() {

@@ -120,7 +120,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 			}
 			else {
 				dispose();
-            	mealLogFrame newFrame = new mealLogFrame(this.selectedProfile);
+            	mealLogFrame newFrame = new mealLogFrame(this.meal ,this.selectedProfile);
             	newFrame.setVisible(true);
             	//for testing
             	String ingredientString = ingredientField.getText();

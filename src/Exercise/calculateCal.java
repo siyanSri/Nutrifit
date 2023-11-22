@@ -1,6 +1,9 @@
 package Exercise;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.StringTokenizer;
 
 import Profile.DatabaseManagerProfile;
 
@@ -10,6 +13,7 @@ public class calculateCal {
     String sex;
     double weight;
     int age;
+    String dof;
     double height;
     String Type;
     String Duration;
@@ -22,6 +26,7 @@ public class calculateCal {
         this.Duration = Duration;
         this.intensity = intensity;
         getValues();
+        calculateDOB();
         calculateBMR();
         calBurned();
     }
@@ -34,7 +39,7 @@ public class calculateCal {
             ex.printStackTrace();
         }
         try {
-            this.age = Integer.parseInt(manager.getAge(selectedProfile));
+            this.dof = manager.getDof(selectedProfile);
         } catch (SQLException | NumberFormatException ex) {
             ex.printStackTrace();
         }
@@ -56,6 +61,19 @@ public class calculateCal {
         } else {
             this.BMR = (10 * weight) + (6.25 * height) - (5 * age) - 161;
         }
+    }
+    
+    public void calculateDOB() {
+        StringTokenizer tokenizer = new StringTokenizer(dof, "-");
+        int year = Integer.parseInt(tokenizer.nextToken());
+        int month = Integer.parseInt(tokenizer.nextToken());
+        int day = Integer.parseInt(tokenizer.nextToken());
+
+        LocalDate birthDate = LocalDate.of(year, month, day);
+        LocalDate currentDate = LocalDate.now();
+
+        Period period = Period.between(birthDate, currentDate);
+        this.age = period.getYears();
     }
     
     public void calBurned() {
