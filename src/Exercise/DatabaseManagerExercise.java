@@ -1,44 +1,47 @@
 package Exercise;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
-public class DatabaseManagerExercise{
+import connection.DatabaseAdapter;
+import connection.DatabaseContext;
+import connection.DatabaseStrategy;
+import connection.MySqlConnectionStrategy;
 
-	private DatabaseAdapter sql = new SqlAdapter();
-	private Connection connection;
-	
+
+ /**
+ * The class Database manager exercise
+ */ 
+public class DatabaseManagerExercise{
+	private DatabaseContext context = new DatabaseContext();
+
+
 	private String username ;
 	private String password ;
     
     DatabaseManagerExercise() {
-    	username = System.getenv("NAME");
-    	password = System.getenv("PASS");
-    	System.out.println(username+password);
+    	username = System.getenv("NAME").toString();
+		password = System.getenv("PASS").toString();
     }
-    public void connect() {
-    	connection = sql.connect(username,password);
-    }
-    public void create(UserExerciseData user){
-    	
     
-        String insertSQL = "INSERT INTO exercise (Type,Duration,Intensity,doe) VALUES (?, ?, ?, ?)";
-        Random rand = new Random(); 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dom = dateFormat.format(user.getDate());
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSQL)) {
+/** 
+ *
+ * Creates entry for user exercise
+ *
+ * @param user  the user. 
+ */
+    public void create(UserExerciseData user){ 
 
-            preparedStatement.setString(1, user.getExerciseType());
-            preparedStatement.setFloat(2, user.getExerciseDuration());
-            preparedStatement.setString(3, user.getExerciseIntensity());
-            preparedStatement.setString(4, dom);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    	this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String dom = dateFormat.format(user.getDate());
+		String insertSQL = "INSERT INTO exercise (Type, Duration, Intensity, doe, name, cals) VALUES ('" + 
+	            user.getExerciseType() + "', '" + user.getExerciseDuration() + "', '" + 
+	            user.getExerciseIntensity() + "', '" + dom + "', '" + user.getName() + "', '" + user.getCals() + "')";
+
+		context.executeDatabaseOperations(username, password, insertSQL);
     }
 }

@@ -1,74 +1,83 @@
-/**
- * 
- */
 package Profile;
 
 import javax.swing.*;
+import mainGUI.mainGUIFrame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 
-/**
- * @author 
- *
- */
 public class ProfileUI extends JFrame{
 
 
+	private UserProfile user = new UserProfile();
 	private static final long serialVersionUID = 1L;
 
 	private JFormattedTextField dofField;
+	private JTextField nameField;
 	private JTextField heightField;
 	private JTextField weightField;
 	private JTextField sexField;
 	private JRadioButton mRadioButton;
 	private JRadioButton iRadioButton;
 	private ButtonGroup radioGroup;
-	
-	
-	public ProfileUI() {
+
+
+
+	/** 
+	 *
+	 * Profile UI
+	 *
+	 * @return 	public
+	 */
+	public ProfileUI() { 
+
 		setTitle("Health Information Form");
 		setSize(300, 200);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new GridLayout(6, 3));
+		mainPanel.setLayout(new GridLayout(7, 3));
+
+		JLabel nameLabel = new JLabel("What is your name:");
+		nameField = new JTextField(20);
 
 		JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
 
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		dofField = new JFormattedTextField(df);
-		
+
 		JLabel heightLabel = new JLabel("Height (cm):");
 		heightField = new JTextField(20);
 
 		JLabel weightLabel = new JLabel("Weight (kg):");
 		weightField = new JTextField(20);
-		
+
 		JLabel sexLabel = new JLabel("Sex   Male(m) Female(m) Other(o):");
 		sexField = new JTextField(20);
 
-		JPanel measurementPanel = new JPanel();
-        JLabel units = new JLabel("Measurement Type:");
-        radioGroup = new ButtonGroup();
-        mRadioButton = new JRadioButton("Metric");
-        iRadioButton = new JRadioButton("Imperial");
-        radioGroup.add(mRadioButton);
-        radioGroup.add(iRadioButton);
-        measurementPanel.add(mRadioButton);
-        measurementPanel.add(iRadioButton);
-		
-		JButton submitButton = new JButton("Submit");
-		submitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				handleSubmit();
-			}
-		});
 
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+        	/*
+        	 * Check if all fields are filled
+        	 */
+            public void actionPerformed(ActionEvent e) {
+                if (validateFields()) {
+                    handleSubmit();
+                    dispose();
+                    mainGUIFrame mainFrame = new mainGUIFrame(nameField.getText().toString());
+                    mainFrame.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(ProfileUI.this, "Please fill in all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+		mainPanel.add(nameLabel);
+		mainPanel.add(nameField);
 		mainPanel.add(dateOfBirthLabel);
 		mainPanel.add(dofField);
 		mainPanel.add(heightLabel);
@@ -77,23 +86,51 @@ public class ProfileUI extends JFrame{
 		mainPanel.add(weightField);
 		mainPanel.add(sexLabel);
 		mainPanel.add(sexField);
-		mainPanel.add(units);
-		mainPanel.add(measurementPanel);
 		mainPanel.add(submitButton);
-        add(mainPanel);
+		add(mainPanel);
 	}
-	
-	 private void handleSubmit() {
-	        UserProfile user = new UserProfile();
-	        user.setDof(dofField.getText().toString());
-			user.setHeight(Float.parseFloat(heightField.getText().toString()));
-			user.setWeight(Float.parseFloat(weightField.getText().toString()));
-			user.setSex(sexField.getText().toString().charAt(0));
-			user.setUnit(mRadioButton.isSelected());
-	       
-			user.createProfile();
-			
-	 }
 
+
+    private boolean validateFields() {
+        // Validate that all fields are filled
+        if (nameField.getText().trim().isEmpty() ||
+            dofField.getText().trim().isEmpty() ||
+            heightField.getText().trim().isEmpty() ||
+            weightField.getText().trim().isEmpty() ||
+            sexField.getText().trim().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+	
+	/** 
+	 *
+	 * Handle submit
+	 *
+	 */
+	private void handleSubmit() { 
+
+		user.setName(nameField.getText().toString());
+		user.setDof(dofField.getText().toString());
+		user.setHeight(Float.parseFloat(heightField.getText().toString()));
+		user.setWeight(Float.parseFloat(weightField.getText().toString()));
+		user.setSex(sexField.getText().toString().charAt(0));
+		user.setUnit(mRadioButton.isSelected());
+
+		user.createProfile();
+
+	}
+
+
+	/** 
+	 *
+	 * Gets the current
+	 *
+	 * @return the current
+	 */
+	public UserProfile getCurrent() { 
+
+		return this.user;
+	}
 
 }

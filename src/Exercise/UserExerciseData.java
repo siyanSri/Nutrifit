@@ -14,6 +14,8 @@ public class UserExerciseData {
 	private String exerciseType;
 	private Float exerciseDuration;
 	private String exerciseIntensity;
+	private String name;
+	private String cals; 
 	
 	
 	public void createExercise() {
@@ -22,12 +24,16 @@ public class UserExerciseData {
 	
 	private void database() {
 		DatabaseManagerExercise database = new DatabaseManagerExercise();
-        database.connect();
         database.create(this);
 	}
-	
+	public String getCals() {
+		return this.cals;
+	}
 	public Date getDate() {
 		return this.date;
+	}
+	public String getName() {
+		return this.name;
 	}
 	public String getTime() {
 		return this.time;
@@ -51,6 +57,12 @@ public class UserExerciseData {
 	}
 	public void setTime(String time) {
 		this.time = time;
+	}
+	public void setCals(String cals) {
+		this.cals = cals;
+	}
+	public void setName(String selectedProfile) {
+		this.name = selectedProfile;
 	}
 	public void setExerciseType(String exerciseType) {
 		this.exerciseType = exerciseType;
