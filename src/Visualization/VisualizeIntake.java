@@ -6,16 +6,13 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import javax.swing.*;
-
 import mainGUI.mainGUIFrame;
 import Meal.Meal;
 
@@ -49,7 +46,7 @@ public class VisualizeIntake extends JFrame {
 
 			/** 
 			 *
-			 * Action performed
+			 * Action performed, back to main frame
 			 *
 			 * @param e  the e. 
 			 */
@@ -59,16 +56,35 @@ public class VisualizeIntake extends JFrame {
 				dispose();
 
 				// Create a new frame or navigate back to the previous frame
-				mainGUIFrame previousFrame = new mainGUIFrame(selectedUser); 
+				mainGUIFrame previousFrame = new mainGUIFrame(selectedUser);
 				previousFrame.setVisible(true);
+			}
+		});
+
+		JButton recommendedButton = new JButton("Recommended from CFG");
+		recommendedButton.addActionListener(new ActionListener() {
+			@Override
+
+			/** 
+			 *
+			 * Action performed, CFG chart frame
+			 *
+			 * @param e  the e. 
+			 */
+			public void actionPerformed(ActionEvent e) { 
+
+				dispose();
+				recommendedCFG cfg = new recommendedCFG(selectedUser);
+				cfg.setVisible(true);
 			}
 		});
 
 		id = meal.getUserId(selectedUser);
 
 		List<Float> nutrientVals = meal.getVisualdata(id);
+		System.out.println(nutrientVals.toString());
 
-		if(!nutrientVals.isEmpty()) {
+		if (!nutrientVals.isEmpty()) {
 			JTabbedPane tabbedPane = new JTabbedPane();
 
 			tabbedPane.addTab("Calories", createPieChartPanel("Calories", nutrientVals.get(0), 2000));
@@ -80,11 +96,16 @@ public class VisualizeIntake extends JFrame {
 			tabbedPane.addTab("Sugar", createPieChartPanel("Sugar", nutrientVals.get(6), 32));
 			tabbedPane.addTab("Protien", createPieChartPanel("Protien", nutrientVals.get(7), getProtien()));
 
+			// Add the "Recommended from CFG" button on top of the "Back" button
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new BorderLayout());
+			buttonPanel.add(recommendedButton, BorderLayout.WEST);
+			buttonPanel.add(backButton, BorderLayout.EAST);
+
 			setLayout(new BorderLayout());
-			add(backButton, BorderLayout.NORTH);
+			add(buttonPanel, BorderLayout.NORTH);
 			add(tabbedPane, BorderLayout.CENTER);
-		}
-		else {
+		} else {
 			JLabel Panel = new JLabel("No data Logged on User");
 			Panel.setSize(new Dimension(500, 270));
 
@@ -92,9 +113,6 @@ public class VisualizeIntake extends JFrame {
 			add(backButton, BorderLayout.NORTH);
 			add(Panel, BorderLayout.CENTER);
 		}
-
-
-
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600, 400);
@@ -133,7 +151,7 @@ public class VisualizeIntake extends JFrame {
 
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setSectionPaint("Progress", Color.BLUE);
-		plot.setSectionPaint("Remaining", Color.LIGHT_GRAY); // You can choose a different color for the remaining part
+		plot.setSectionPaint("Remaining", Color.LIGHT_GRAY); 
 
 		// Customize the section labels
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {1}"));
