@@ -6,17 +6,22 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/tosay/Downloads/jfreechart-1.0.19.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/tosay/Downloads/jcommon-1.0.23.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/tosay/Downloads/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0/mysql-connector-j-8.2.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JFree"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Connector"/>
-	<classpathentry kind="lib" path="D:/Folders/Fattingham/Uni/eecs 3311/project/jfreechart-1.0.19/lib/jcommon-1.0.23.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="D:/Folders/Fattingham/Uni/eecs 3311/project/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

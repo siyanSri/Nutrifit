@@ -36,12 +36,12 @@ public class calculateCal {
 	 * @param Duration  the duration. 
 	 * @param intensity  the intensity. 
 	 */
-	public calculateCal(String selectedProfile, String Type, String Duration,String intensity) { 
+	public calculateCal(calculationGetParameters parameters) { 
 
-		this.selectedProfile = selectedProfile;
-		this.Type = Type;
-		this.Duration = Duration;
-		this.intensity = intensity;
+		this.selectedProfile = parameters.selectedProfile;
+        this.Type = parameters.Type;
+        this.Duration = parameters.Duration;
+        this.intensity = parameters.intensity;
 		getValues();
 		calculateDOB();
 		calculateBMR();

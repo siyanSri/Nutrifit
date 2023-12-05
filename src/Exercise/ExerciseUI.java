@@ -276,7 +276,14 @@ public class ExerciseUI extends JFrame {
 				durationList.add(durationString);
 				intensityList.add(intensityString);
 
-				calculateCal cals = new calculateCal(selectedProfile,exerciseList.get(0),durationString,intensityList.get(0));
+				calculationGetParameters parameters = new calculationGetParameters(selectedProfile,exerciseString,durationString,
+						intensityString);
+				parameters.selectedProfile = selectedProfile;
+                parameters.Type = exerciseList.get(0);
+                parameters.Duration = durationString;
+                parameters.intensity = intensityList.get(0);
+
+                calculateCal cals = new calculateCal(parameters);
 				String Calories = cals.getCalories();
 				user.setDate(dateValue);
 				user.setName(selectedProfile);
