@@ -3,6 +3,8 @@ package Profile;
 
 import connection.DatabaseContext;
 import connection.MySqlConnectionStrategy;
+import connection.dataBaseUsernamePassword;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -28,9 +30,8 @@ public class DatabaseManagerProfile {
  *
  */
 	public DatabaseManagerProfile() { 
-
-		username = System.getenv("NAME").toString();
-		password = System.getenv("PASS").toString();
+    	username = dataBaseUsernamePassword.getUsername();
+        password = dataBaseUsernamePassword.getPassword();
 	}
 
 

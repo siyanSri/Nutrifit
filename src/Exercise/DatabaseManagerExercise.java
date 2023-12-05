@@ -9,6 +9,7 @@ import connection.DatabaseAdapter;
 import connection.DatabaseContext;
 import connection.DatabaseStrategy;
 import connection.MySqlConnectionStrategy;
+import connection.dataBaseUsernamePassword;
 
 
  /**
@@ -22,8 +23,8 @@ public class DatabaseManagerExercise{
 	private String password ;
     
     DatabaseManagerExercise() {
-    	username = System.getenv("NAME").toString();
-		password = System.getenv("PASS").toString();
+    	username = dataBaseUsernamePassword.getUsername();
+        password = dataBaseUsernamePassword.getPassword();
     }
     
 

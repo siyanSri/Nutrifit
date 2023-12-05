@@ -3,6 +3,8 @@ package Meal;
 
 import connection.DatabaseContext;
 import connection.MySqlConnectionStrategy;
+import connection.dataBaseUsernamePassword;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -24,8 +26,8 @@ public class DatabaseManagerMeal {
 	private String password ;
 
 	DatabaseManagerMeal() {
-		username = System.getenv("NAME").toString();
-		password = System.getenv("PASS").toString();
+    	username = dataBaseUsernamePassword.getUsername();
+        password = dataBaseUsernamePassword.getPassword();
 	}
 
 	
