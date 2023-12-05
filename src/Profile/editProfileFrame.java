@@ -422,61 +422,55 @@ public class editProfileFrame extends JFrame implements ItemListener, ActionList
 				mainFrame.setVisible(true);
 			}
 			else {
-				DatabaseManagerProfile manager = new DatabaseManagerProfile();
-				if (editName.isSelected()) {
-					try {
-						manager.updateName(selectedProfile, nameField.getText());
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-					nameLabel.setText(nameField.getText());
-					selectedProfile = nameField.getText();
-					dispose();
-					mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-					mainFrame.setVisible(true);
-				}
-				if (editDof.isSelected()) {
-					try {
-						manager.updateDof(selectedProfile, dofField.getText());
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-					dispose();
-					mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-					mainFrame.setVisible(true);
-				}
-				if (editHeight.isSelected()) {
-					try {
-						manager.updateHeight(selectedProfile, heightField.getText());
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-					dispose();
-					mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-					mainFrame.setVisible(true);
-				}
-				if (editWeight.isSelected()) {
-					try {
-						manager.updateWeight(selectedProfile, weightField.getText());
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-					dispose();
-					mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-					mainFrame.setVisible(true);
-				}
-				if (editSex.isSelected()) {
-					try {
-						manager.updateSex(selectedProfile, sexField.getText());
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					}
-					dispose();
-					mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
-					mainFrame.setVisible(true);
-				}
+			    DatabaseManagerProfile manager = new DatabaseManagerProfile();
+
+			    if (editName.isSelected()) {
+			        updateProfileAttribute(manager, "Name", nameField.getText());
+			    }
+			    if (editDof.isSelected()) {
+			        updateProfileAttribute(manager, "Dof", dofField.getText());
+			    }
+			    if (editHeight.isSelected()) {
+			        updateProfileAttribute(manager, "Height", heightField.getText());
+			    }
+			    if (editWeight.isSelected()) {
+			        updateProfileAttribute(manager, "Weight", weightField.getText());
+			    }
+			    if (editSex.isSelected()) {
+			        updateProfileAttribute(manager, "Sex", sexField.getText());
+			    }
+
+			    dispose();
+			    mainGUIFrame mainFrame = new mainGUIFrame(selectedProfile);
+			    mainFrame.setVisible(true);
 			}
 		}
+	}
+	
+	private void updateProfileAttribute(DatabaseManagerProfile manager, String attribute, String value) {
+	    try {
+	        switch (attribute) {
+	            case "Name":
+	                manager.updateName(selectedProfile, value);
+	                nameLabel.setText(value);
+	                selectedProfile = value;
+	                break;
+	            case "Dof":
+	                manager.updateDof(selectedProfile, value);
+	                break;
+	            case "Height":
+	                manager.updateHeight(selectedProfile, value);
+	                break;
+	            case "Weight":
+	                manager.updateWeight(selectedProfile, value);
+	                break;
+	            case "Sex":
+	                manager.updateSex(selectedProfile, value);
+	                break;
+	        }
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    }
 	}
 
 	@Override
