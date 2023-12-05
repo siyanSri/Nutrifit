@@ -45,6 +45,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
  * @param selectedProfile  the selected profile. 
  * @return 	public
  */
+	@SuppressWarnings("unchecked")
 	public ingredientLogFrame(Meal meal, String type, String date, String selectedProfile) { 
 
 		this.meal = meal;
@@ -57,7 +58,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 		
         // Create an instance of the autocomplete class for ingredientField
 		
-		comboBox = new JComboBox(this.meal.getFoods().toArray());
+		comboBox = new JComboBox(MealHandler.getFoods().toArray());
         // has to be editable
         comboBox.setEditable(true);
         // change the editor's document
@@ -185,8 +186,7 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 			e1.printStackTrace();
 		}
 
-	    
-	    this.meal.create();
+	    MealHandler.create(meal);
 	}
 
 }

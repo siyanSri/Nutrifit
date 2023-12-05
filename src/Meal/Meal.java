@@ -17,7 +17,6 @@ import Settings.Observer;
 public class Meal implements Component, Observer{
 
 
-	private DatabaseManagerMeal database = null;
 	private Boolean metric = true;
 
 	private String name;
@@ -66,180 +65,11 @@ public class Meal implements Component, Observer{
 		this.date = new SimpleDateFormat("yyyy/MM/dd").parse(date);
 		this.mealType = mealType;
 		this.quantity = Float.valueOf(quantity);
-		this.mealId = getMealId(name);
-		this.userId = setId(selectedProfile);
-		getNutrients();
+		this.mealId = MealHandler.getMealId(name);
+		this.userId = MealHandler.setId(selectedProfile);
+		this.components = MealHandler.getNutrients(this, this.quantity);
 	}
 
-
-	/** 
-	 *
-	 * Database Init
-	 *
-	 */
-	private void database() { 
-
-		this.database = new DatabaseManagerMeal();
-	}
-
-
-	/** 
-	 *
-	 * Create Meal
-	 *
-	 */
-	public void create() { 
-
-		if(database == null)	
-			database();
-		database.create(this, this.userId);
-	}
-
-
-	/** 
-	 *
-	 * Gets the foods names
-	 *
-	 * @return the foods
-	 */
-	public ArrayList<String> getFoods() { 
-
-		if(database == null)	
-			database();
-		return database.fetchNames();
-	}
-
-
-	/** 
-	 *
-	 * Gets the meal identifier
-	 *
-	 * @param name  the name. 
-	 * @return the meal identifier
-	 */
-	public Integer getMealId(String name) { 
-
-		if(database == null)	
-			database();
-		return database.getMealId(name);
-	}
-
-
-	/** 
-	 *
-	 * Sets the user identifier
-	 *
-	 * @param selectedProfile  the selected profile. 
-	 */
-	public void setUserId(String selectedProfile) { 
-
-		if(database == null)	
-			database();
-		this.userId = database.getUserId(selectedProfile);
-	}
-
-
-	/** 
-	 *
-	 * Gets the user identifier
-	 *
-	 * @param name  the name. 
-	 * @return the user identifier
-	 */
-	public String getUserId(String name){ 
-
-		if(database == null)	
-			database();
-		return database.getUserId(name);
-	}
-
-
-	/** 
-	 *
-	 * Gets the visualdata, Top nutrients
-	 *
-	 * @param userId  the user identifier. 
-	 * @return the visualdata
-	 */
-	public List<Float> getVisualdata(String userId) { 
-
-		if(database == null)	
-			database();
-		return database.getVisualizeIntake(userId);
-	}
-
-
-	/** 
-	 *
-	 * Gets the weight
-	 *
-	 * @param selectedProfile  the selected profile. 
-	 * @return the weight
-	 */
-	public float getWeight(String selectedProfile) { 
-
-		if(database == null)	
-			database();
-		return database.getWeight(selectedProfile);
-	}
-
-
-	/** 
-	 *
-	 * Gets the nutrients
-	 *
-	 */
-	private void getNutrients() { 
-
-		List<Integer> nutrientId = new ArrayList<>();
-		List<Float> nutrientAmount = new ArrayList<>();
-		List<String> nutrientName = new ArrayList<>();
-		List<String> nutrientUnit = new ArrayList<>();
-		database.nutrientInfo(this.mealId , nutrientId, nutrientAmount);
-		this.currentSize = nutrientId.size();
-		database.nutrientVals(nutrientId, nutrientName, nutrientUnit);
-		createNutrients(nutrientId, nutrientAmount, nutrientName, nutrientUnit);
-	}
-
-
-
-	/** 
-	 *
-	 * Create nutrients
-	 *
-	 * @param nutrientId  the nutrient identifier. 
-	 * @param nutrientAmount  the nutrient amount. 
-	 * @param nutrientName  the nutrient name. 
-	 * @param nutrientUnit  the nutrient unit. 
-	 */
-	private void createNutrients(List<Integer> nutrientId, List<Float> nutrientAmount, List<String> nutrientName, List<String> nutrientUnit) { 
-
-
-		for(int i = 0; i<nutrientId.size(); i++) {
-			converter(nutrientAmount, nutrientUnit);
-			Component nutrient = new Nutrient(nutrientId.get(i), nutrientName.get(i), nutrientAmount.get(i), nutrientUnit.get(i));
-			this.components.add(nutrient);
-		}	
-	}
-
-
-
-	/** 
-	 *
-	 * Converter
-	 *
-	 * @param nutrientAmount  the nutrient amount. 
-	 * @param nutrientUnit  the nutrient unit. 
-	 */
-	private void converter(List<Float> nutrientAmount, List<String> nutrientUnit) { 
-
-		for(int i = 0; i<nutrientAmount.size(); i++) {
-			if(nutrientUnit.get(i).equals("g")) {
-				Float amount = (this.quantity) * (nutrientAmount.get(i)/100);
-				nutrientAmount.set(i,amount);
-			}
-		}
-	}
 
 	@Override 
 
@@ -388,21 +218,6 @@ public class Meal implements Component, Observer{
 
 	/** 
 	 *
-	 * Sets the identifier
-	 *
-	 * @param selectedProfile  the selected profile. 
-	 * @return String
-	 */
-	public String setId(String selectedProfile) { 
-
-		if(database == null)	
-			database();
-		return database.getUserId(selectedProfile);
-	}
-
-
-	/** 
-	 *
 	 * Gets the user identifier
 	 *
 	 * @return the user identifier
@@ -410,6 +225,11 @@ public class Meal implements Component, Observer{
 	public String getUserId() { 
 
 		return this.userId;
+	}
+
+
+	public void setSize(int size) {
+		this.currentSize = size;
 	}
 
 }
