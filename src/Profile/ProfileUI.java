@@ -115,7 +115,6 @@ public class ProfileUI extends JFrame{
 		user.setHeight(Float.parseFloat(heightField.getText().toString()));
 		user.setWeight(Float.parseFloat(weightField.getText().toString()));
 		user.setSex(sexField.getText().toString().charAt(0));
-		user.setUnit(mRadioButton.isSelected());
 
 		user.createProfile();
 

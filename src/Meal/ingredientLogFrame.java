@@ -173,13 +173,18 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
 	    quantityList.add(quantityString);
 	    
 	    try {
-			this.meal = new Meal(comboBox.getSelectedItem().toString(), this.date, this.type, quantityString, this.selectedProfile);
-
-	    }
-	    catch (ParseException e) {
+			this.meal = new MealBuilder()
+				    .withName(comboBox.getSelectedItem().toString())
+				    .withDate(this.date)
+				    .withMealType(this.type)
+				    .withQuantity(quantityString)
+				    .withSelectedProfile(this.selectedProfile)
+				    .build();
+		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+
 	    
 	    this.meal.create();
 	}

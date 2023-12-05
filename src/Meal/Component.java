@@ -1,5 +1,5 @@
 package Meal;
 
-interface Component extends Iterable<Component> {
+interface Component{
     void log();
 }

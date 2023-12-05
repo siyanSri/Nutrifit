@@ -62,7 +62,6 @@ public class Meal implements Component, Observer{
 	 */
 	public Meal(String name, String date, String mealType, String quantity, String selectedProfile) throws ParseException { 
 
-
 		this.name = name;
 		this.date = new SimpleDateFormat("yyyy/MM/dd").parse(date);
 		this.mealType = mealType;
@@ -255,7 +254,6 @@ public class Meal implements Component, Observer{
 		this.metric = metric;
 	}
 
-	@Override
 
 	/** 
 	 *

@@ -28,10 +28,6 @@ class Nutrient implements Component {
         System.out.println("Nutrient: " + name);
     }
 
-	@Override
-	public Iterator<Component> iterator() {
-		return null;
-	}
 	
 	
 }

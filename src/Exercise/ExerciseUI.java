@@ -286,6 +286,9 @@ public class ExerciseUI extends JFrame {
 				user.setCals(Calories);
 				user.createExercise();
 				dispose();
+				// Create a new frame or navigate back to the previous frame
+				mainGUIFrame previousFrame = new mainGUIFrame(selectedProfile); 
+				previousFrame.setVisible(true);
 			}
 		});
 
