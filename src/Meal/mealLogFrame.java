@@ -174,11 +174,9 @@ public class mealLogFrame extends JFrame implements ActionListener{
 		//System.out.println(this.meal.setId(selectedProfile));
 		if (e.getSource()==submitButton) {		
 			dispose();
-
-			ingredientLogFrame newFrame = new ingredientLogFrame(this.meal, foodTypeString, dateField.getText(), selectedProfile);
+			parametersForIngredients param = new parametersForIngredients(this.meal, foodTypeString, dateField.getText(), selectedProfile);
+			ingredientLogFrame newFrame = new ingredientLogFrame(param);
 			newFrame.setVisible(true);
-
-
 		}
 
 	}

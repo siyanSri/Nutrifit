@@ -46,12 +46,12 @@ public class ingredientLogFrame extends JFrame implements ActionListener{
  * @return 	public
  */
 	@SuppressWarnings("unchecked")
-	public ingredientLogFrame(Meal meal, String type, String date, String selectedProfile) { 
+	public ingredientLogFrame(parametersForIngredients params) { 
 
-		this.meal = meal;
-		this.type = type;
-		this.date = date;
-		this.selectedProfile = selectedProfile;
+		this.meal = params.getMeal();
+        this.type = params.getType();
+        this.date = params.getDate();
+        this.selectedProfile = params.getSelectedProfile();
 		
 		ingredientsList = new ArrayList<>();
 		quantityList = new ArrayList<>();
