@@ -169,4 +169,6 @@ public class calculateCal {
 
 		return String.valueOf(totalCaloriesBurned);
 	}
+	
+	
 }

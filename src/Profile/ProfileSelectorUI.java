@@ -38,7 +38,7 @@ public class ProfileSelectorUI extends JFrame{
         
         
         // Create a JList to display profiles
-        ArrayList<String> profiles = user.getProfiles(); // Replace with actual profile names from the database
+        ArrayList<String> profiles = ProfileHandler.getProfiles(user); // Replace with actual profile names from the database
         JList<String> profileList = new JList<>(profiles.toArray(new String[profiles.size()]));
         JScrollPane scrollPane = new JScrollPane(profileList);
 

@@ -116,7 +116,7 @@ public class ProfileUI extends JFrame{
 		user.setWeight(Float.parseFloat(weightField.getText().toString()));
 		user.setSex(sexField.getText().toString().charAt(0));
 
-		user.createProfile();
+		ProfileHandler.createProfile(user);
 
 	}
 

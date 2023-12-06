@@ -31,7 +31,7 @@ public class DatabaseManagerProfile {
  */
 	public DatabaseManagerProfile() { 
     	username = dataBaseUsernamePassword.getUsername();
-        password = dataBaseUsernamePassword.getPassword();
+        password = dataBaseUsernamePassword.getUsername();
 	}
 
 
@@ -44,8 +44,6 @@ public class DatabaseManagerProfile {
 	public void create(UserProfile user){ 
 
 
-		
-		
 		this.context.setDatabaseStrategy(new MySqlConnectionStrategy());
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -20,64 +20,6 @@ public class UserProfile {
 	private char unit;
 	private String userID;
 
-	private DatabaseManagerProfile database = null;
-
-
-	/** 
-	 *
-	 * Database
-	 *
-	 */
-	private void database() { 
-
-		this.database = new DatabaseManagerProfile();
-
-		UniqueIDGenerator idGenerator = new UniqueIDGenerator();
-		this.userID = idGenerator.generateUniqueID();
-	}
-
-
-	/** 
-	 *
-	 * Create profile
-	 *
-	 */
-	public void createProfile() { 
-
-		if(database == null)	
-			database();
-		database.create(this);
-
-
-	}
-
-	/** 
-	 *
-	 * Gets the profiles
-	 *
-	 * @return the profiles
-	 */
-	public ArrayList<String> getProfiles() { 
-
-		if(database == null)	
-			database();
-		return database.fetchNames();
-	}
-
-	/** 
-	 *
-	 * Gets the user identifier
-	 *
-	 * @param name  the name. 
-	 * @return the user identifier
-	 */
-	public String getUserId(String name){ 
-
-		if(database == null)	
-			database();
-		return database.getUserId(name);
-	}
-
 
 	/** 
 	 *

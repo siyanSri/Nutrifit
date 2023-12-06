@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.*;
 import mainGUI.mainGUIFrame;
 import Meal.Meal;
+import Meal.MealHandler;
 
 
 /**
@@ -79,9 +80,9 @@ public class VisualizeIntake extends JFrame {
 			}
 		});
 
-		id = meal.getUserId(selectedUser);
+		id = MealHandler.getUserId(selectedUser);
 
-		List<Float> nutrientVals = meal.getVisualdata(id);
+		List<Float> nutrientVals = MealHandler.getVisualdata(id);
 		System.out.println(nutrientVals.toString());
 
 		if (!nutrientVals.isEmpty()) {
@@ -170,7 +171,7 @@ public class VisualizeIntake extends JFrame {
 
 		float output;
 
-		this.weight = meal.getWeight(selectedUser);
+		this.weight = MealHandler.getWeight(selectedUser);
 		if(this.weight == 0) {
 			output = 56;
 		}
