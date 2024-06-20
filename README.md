@@ -11,3 +11,6 @@ Nutrifit, your personal journal for tracking diet and exercise. This application
 3. Create environment variables in your system call NAME and PASS, containing the username and password of your sql database (alternatively you could hard code the username and password into all the database manager java files)
 
 4. Run the main.java found in the Main package
+
+
+![alt text](https://github.com/siyanSri/Nutrifit/blob/main/Screenshot%202024-06-14%20191047.png?raw=true)
