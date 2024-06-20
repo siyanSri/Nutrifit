@@ -15,4 +15,4 @@ Nutrifit, your personal journal for tracking diet and exercise. This application
 
 ![alt text](https://github.com/siyanSri/Nutrifit/blob/main/Screenshot%202024-06-14%20191047.png?raw=true)
 ![alt text](https://github.com/siyanSri/Nutrifit/blob/main/Screenshot%202024-06-14%20191928.png?raw=true)
-![alt text](https://github.com/siyanSri/Nutrifit/blob/main/Screenshot%202024-06-14%20191045.png?raw=true)
+![alt text](https://github.com/siyanSri/Nutrifit/blob/main/Screenshot%202024-06-14%20191945.png?raw=true)
